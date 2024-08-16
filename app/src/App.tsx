@@ -1,18 +1,17 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Layout from './components/Layout';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import IndexPage from './pages/IndexPage';
+import Layout from './components/Layout';
 
-const App = () => {
+function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<IndexPage />} />
-        </Routes>
-      </Layout>
+      <Routes>
+        <Route path="/" element={<Layout children={undefined} />}>
+          <Route index element={<IndexPage />} />
+        </Route>
+      </Routes>
     </Router>
   );
-};
+}
 
 export default App;

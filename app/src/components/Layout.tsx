@@ -1,16 +1,19 @@
 import React from 'react';
-import Nav from './Nav';
 import { Box } from '@chakra-ui/react';
+import { Outlet } from 'react-router-dom'; 
+import Nav from './Nav';
 import Footer from './Footer';
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Layout: React.FC = () => {
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" minHeight="100vh">
       <Nav />
-      <Box as="main" flex="1">
-        {children}
+      <Box ml={{ base: 0, md: 60 }} flex="1" p={4}>
+        <Outlet /> {/* ページのコンテンツがここに表示されます */}
       </Box>
-      <Footer />
+      <Box ml={{ base: 0, md: 60 }}>
+        <Footer />
+      </Box>
     </Box>
   );
 };
