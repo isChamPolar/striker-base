@@ -1,6 +1,4 @@
 import { Box, Heading, Stack, Text, Avatar, Flex } from '@chakra-ui/react';
-import { SocialButton } from '../components/Footer';
-import { FaYoutube } from 'react-icons/fa';
 import { XTwitterButton, YouTubeButton } from '../components/SocialButton';
 
 const HomePage = () => {
@@ -28,24 +26,36 @@ const HomePage = () => {
         <Box
           textAlign={'center'}
           px={6}
+          py={4}
+          maxW={'400px'}
+          borderWidth={'2px'}
+          borderRadius={'lg'}
+          overflow={'hidden'}
+          boxShadow={'md'}
+          bg={'white'}
         >
           <Avatar
-            src={
-              '../public/owner-icon.png'
-            }
-            mb={2}
+            src={'../public/owner-icon.png'}
+            mb={4}
             w={24}
             h={24}
-            style={{ borderRadius: '50%' }}
             border={'2px solid'}
             borderColor={'gray.200'}
           />
-          <Text fontWeight={600}>よしちゃぽ</Text>
+          <Text fontWeight={600} fontSize={'lg'}>
+            よしちゃぽ
+          </Text>
           <Text fontSize={'sm'} color={'gray.400'}>
             ストライカー / エンジニア
           </Text>
-          <Flex direction={'row'} justifyContent={'center'} alignItems={'center'} gap={4}>
-            <Box my={3}>
+          <Flex
+            direction={'row'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            gap={4}
+            mt={4}
+          >
+            <Box>
               <XTwitterButton />
             </Box>
             <Box>
