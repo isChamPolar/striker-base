@@ -1,7 +1,7 @@
 import { Box, Heading, Stack, Text, Avatar, Flex } from '@chakra-ui/react';
 import { SocialButton } from '../components/Footer';
 import { FaYoutube } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
+import { XTwitterButton, YouTubeButton } from '../components/SocialButton';
 
 const HomePage = () => {
   return (
@@ -42,18 +42,14 @@ const HomePage = () => {
           />
           <Text fontWeight={600}>よしちゃぽ</Text>
           <Text fontSize={'sm'} color={'gray.400'}>
-            開発者 / ストライカー
+            ストライカー / エンジニア
           </Text>
           <Flex direction={'row'} justifyContent={'center'} alignItems={'center'} gap={4}>
             <Box my={3}>
-              <SocialButton label={'Twitter'} href={'#'}>
-                <FaXTwitter />
-              </SocialButton>
+              <XTwitterButton />
             </Box>
             <Box>
-              <SocialButton label={'YouTube'} href={'#'}>
-                <FaYoutube />
-              </SocialButton>
+              <YouTubeButton />
             </Box>
           </Flex>
         </Box>
