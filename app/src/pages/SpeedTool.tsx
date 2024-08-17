@@ -218,7 +218,7 @@ const SpeedTool = () => {
       </Button>
 
       <Button mt={4} ml={4} colorScheme="blue" bg="blue.400" onClick={onToggle} className="toggle-button">
-        加速の実一覧表: 開く/閉じる
+        わくわくの実一覧表
       </Button>
 
       <Collapse in={isOpen} animateOpacity>
