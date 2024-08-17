@@ -15,6 +15,7 @@ import {
   useDisclosure 
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import { getSortedWakuwaku } from '../constants/wakuwakuMaster';
 
 const SpeedTool = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -116,24 +117,7 @@ const SpeedTool = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {[
-              { name: '同族加速', effect: 20 },
-              { name: '同族加速M', effect: 26.6 },
-              { name: '同族加速L', effect: 33.3 },
-              { name: '同族加速EL', effect: 36.6 },
-              { name: '同族加撃速/同族加速命', effect: 16 },
-              { name: '同族加撃速M/同族加速命M', effect: 21.2 },
-              { name: '同族加撃速L/同族加速命L', effect: 26.6 },
-              { name: '同族加撃速EL/同族加速命EL', effect: 29.3 },
-              { name: '撃種加速/戦型加速', effect: 10 },
-              { name: '撃種加速M/戦型加速M', effect: 13.3 },
-              { name: '撃種加速L/戦型加速L', effect: 16.6 },
-              { name: '撃種加速EL/戦型加速EL', effect: 18.3 },
-              { name: '撃種or戦型加撃速/撃種or戦型加速命', effect: 8 },
-              { name: '撃種or戦型加撃速M/撃種or戦型加速命M', effect: 10.6 },
-              { name: '撃種or戦型加撃速L/撃種or戦型加速命L', effect: 13.2 },
-              { name: '撃種or戦型加撃速EL/撃種or戦型加速命EL', effect: 14.5 },
-            ].map((item, index) => (
+            {getSortedWakuwaku().map((item, index) => (
               <Tr key={index}>
                 <Td>{item.name}</Td>
                 <Td>{item.effect}</Td>
