@@ -11,5 +11,5 @@ export default defineConfig({
       }
     }),
   ],
-  base: '/striker-base/',
+  base: '/striker-base/app/',
 })
