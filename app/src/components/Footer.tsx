@@ -8,11 +8,11 @@ import {
   Text,
   VisuallyHidden,
 } from '@chakra-ui/react'
-import { FaTwitter, FaYoutube } from 'react-icons/fa'
+import { FaYoutube } from 'react-icons/fa'
 import { ReactNode } from 'react'
-import { Logo } from './Logo'
+import { FaXTwitter } from 'react-icons/fa6'
 
-const SocialButton = ({
+export const SocialButton = ({
   children,
   label,
   href,
@@ -89,8 +89,8 @@ export default function SmallCentered() {
           align={{ base: 'center', md: 'center' }}>
           <Text>© 2024 STRIKER BASE. All rights reserved</Text>
           <Stack direction={'row'} spacing={6}>
-            <SocialButton label={'Twitter'} href={'#'}>
-              <FaTwitter />
+            <SocialButton label={'X'} href={'#'}>
+              <FaXTwitter />
             </SocialButton>
             <SocialButton label={'YouTube'} href={'#'}>
               <FaYoutube />

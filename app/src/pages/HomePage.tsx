@@ -1,4 +1,7 @@
-import { Box, Heading, Stack, Text, Avatar } from '@chakra-ui/react';
+import { Box, Heading, Stack, Text, Avatar, Flex } from '@chakra-ui/react';
+import { SocialButton } from '../components/Footer';
+import { FaYoutube } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 
 const HomePage = () => {
   return (
@@ -41,19 +44,36 @@ const HomePage = () => {
           <Text fontSize={'sm'} color={'gray.400'}>
             開発者 / ストライカー
           </Text>
+          <Flex direction={'row'} justifyContent={'center'} alignItems={'center'} gap={4}>
+            <Box my={3}>
+              <SocialButton label={'Twitter'} href={'#'}>
+                <FaXTwitter />
+              </SocialButton>
+            </Box>
+            <Box>
+              <SocialButton label={'YouTube'} href={'#'}>
+                <FaYoutube />
+              </SocialButton>
+            </Box>
+          </Flex>
         </Box>
-        <Text fontSize={{ base: 'lg', md: '2xl' }} textAlign={'center'} maxW={'3xl'} lineHeight={{ base: '170%', md: '160%' }}>
-          このサイトは、全てのストライカーのために
-          <br />
-          便利なツールや攻略情報を提供するサイトです。
-          <br />
-          「こういったツールが欲しかった」
-          「こんな情報が知りたかった」
-          <br />
-          という声にお応えします。
-          <br />
-          誠心誠意、全力でサポートします。
-        </Text>
+        <Box
+          textAlign={'center'}
+          py={6}
+        >
+          <Text fontSize={{ base: 'lg', md: '2xl' }} textAlign={'center'} maxW={'3xl'} lineHeight={{ base: '170%', md: '160%' }}>
+            このサイトは、全てのストライカーのために
+            <br />
+            便利なツールや攻略情報を提供するサイトです。
+            <br />
+            「こういったツールが欲しかった」
+            「こんな情報が知りたかった」
+            <br />
+            という声にお応えします。
+            <br />
+            誠心誠意、全力でサポートします。
+          </Text>
+        </Box>
       </Stack>
     </Box>
   );
