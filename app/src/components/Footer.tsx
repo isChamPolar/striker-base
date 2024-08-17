@@ -3,6 +3,7 @@
 import {
   Box,
   Container,
+  Link,
   Stack,
   Text,
 } from '@chakra-ui/react'
@@ -15,31 +16,46 @@ export default function SmallCentered() {
       color={'gray.700'}
       borderTopWidth={1}
       borderStyle={'solid'}
+      borderColor={'gray.200'}
     >
       <Container
         as={Stack}
         maxW={'6xl'}
         py={4}
-        spacing={4}
+        spacing={2}
         justify={'center'}
         align={'center'}>
         {/* <Logo /> */}
-        <Stack direction={'row'} spacing={6}>
-          <Box as="a" href={'#'}>
-            Home
+        <Stack direction={'row'} spacing={5}>
+          <Box as="a" href={'/'}>
+            トップ
           </Box>
-          <Box as="a" href={'#'}>
-            About
+          <Box as="a" href={'/about'}>
+            ご利用について
           </Box>
-          <Box as="a" href={'#'}>
-            Blog
-          </Box>
-          <Box as="a" href={'#'}>
-            Contact
+          <Box as="a" href={'/privacy-policy'}>
+            プライバシーポリシー
           </Box>
         </Stack>
       </Container>
-
+      <Box
+        borderTopWidth={1}
+        borderStyle={'solid'}
+        borderColor={'gray.200'}>
+        <Container
+          as={Stack}
+          maxW={'6xl'}
+          py={4}
+          direction={{ base: 'column', md: 'row' }}
+          spacing={4}
+          justify={{ base: 'center', md: 'space-between' }}
+          align={{ base: 'center', md: 'center' }}
+          fontSize={12}
+        >
+          <Text>モンスターストライクはXFLAG様が配信するiOS・Android用ゲームアプリです。</Text>
+          <Link href='https://www.monster-strike.com/'>▶モンスターストライク公式サイト</Link>
+        </Container>
+      </Box>
       <Box
         borderTopWidth={1}
         borderStyle={'solid'}
