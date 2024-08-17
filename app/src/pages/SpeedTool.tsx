@@ -16,10 +16,13 @@ import {
   Spinner,
   VStack,
   Text,
-  Flex
+  Flex,
+  HStack,
+  Icon
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { getSortedWakuwaku, wakuwakuSpeedMaster } from '../constants/wakuwakuMaster';
+import { FiTrendingUp } from 'react-icons/fi';
 
 const SpeedTool = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -161,16 +164,17 @@ const SpeedTool = () => {
       as="form"
       onSubmit={handleSubmit}
     >
+    <HStack alignItems="center" mb={5}>
+      <Icon as={FiTrendingUp} boxSize={8} color="blue.400" />
       <Heading
-        px={6}
-        mb={5}
         fontWeight={600}
-        textAlign="center"
-        fontSize={{ base: '3xl', sm: '3xl', md: '4xl' }}
+        fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
         lineHeight={{ base: '160%', sm: '150%' }}
+        ml={2}
       >
         スピード調整ツール
       </Heading>
+    </HStack>
 
       <FormControl isRequired>
         <FormLabel fontWeight={600} htmlFor="speed">現在のスピード</FormLabel>
@@ -181,6 +185,8 @@ const SpeedTool = () => {
           step="0.01" 
           value={speed ?? ''} 
           onChange={handleSpeedChange} 
+          borderColor="gray.400"  // フォームの枠線の色を設定
+          focusBorderColor="blue.400"  // フォーカス時の枠線の色を設定
         />
       </FormControl>
 
@@ -193,6 +199,8 @@ const SpeedTool = () => {
           step="0.01" 
           value={lowerLimit} 
           onChange={handleLowerLimitChange} 
+          borderColor="gray.400"  // フォームの枠線の色を設定
+          focusBorderColor="blue.400"  // フォーカス時の枠線の色を設定
         />
       </FormControl>
 
@@ -205,6 +213,8 @@ const SpeedTool = () => {
           step="0.01" 
           value={upperLimit} 
           onChange={handleUpperLimitChange} 
+          borderColor="gray.400"  // フォームの枠線の色を設定
+          focusBorderColor="blue.400"  // フォーカス時の枠線の色を設定
         />
       </FormControl>
 
@@ -224,14 +234,16 @@ const SpeedTool = () => {
           max={6}
           value={wakuwakuTypeCount} 
           onChange={handleWakuwakuTypeCountChange} 
+          borderColor="gray.400"  // フォームの枠線の色を設定
+          focusBorderColor="blue.400"  // フォーカス時の枠線の色を設定
         />
       </FormControl>
 
-      <Button mt={4} colorScheme="blue" bg="blue.400" onClick={handleSubmit} type="submit" isLoading={isLoading}>
+      <Button mt={4} colorScheme="blue" bg="blue.400" onClick={handleSubmit} type="submit" isLoading={isLoading} color="white">
         計算する！
       </Button>
 
-      <Button mt={4} ml={4} colorScheme="blue" bg="blue.400" onClick={onToggle} className="toggle-button">
+      <Button mt={4} ml={4} colorScheme="blue" bg="blue.400" onClick={onToggle} className="toggle-button" color="white">
         わくわくの実一覧表
       </Button>
 
