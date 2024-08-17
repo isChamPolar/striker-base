@@ -13,6 +13,7 @@ const AppRoutes = () => {
       <Route path="/exp-calculator" element={<ExpCalculator />} />
       <Route path="/exp-adjuster" element={<ExpAdjuster />} />
       <Route path="/ex-counter" element={<ExCounter />} />
+      <Route path="*" element={<HomePage />} />
     </Routes>
   );
 };

@@ -25,8 +25,8 @@ const SocialButton = ({
     <chakra.button
       bg={'blackAlpha.100'}
       rounded={'full'}
-      w={8}
-      h={8}
+      w={12}
+      h={12}
       cursor={'pointer'}
       as={'a'}
       href={href}
@@ -58,7 +58,7 @@ export default function SmallCentered() {
         spacing={4}
         justify={'center'}
         align={'center'}>
-        <Logo />
+        {/* <Logo /> */}
         <Stack direction={'row'} spacing={6}>
           <Box as="a" href={'#'}>
             Home
