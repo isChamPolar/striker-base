@@ -27,11 +27,13 @@ const SpeedTool = () => {
   const [speed, setSpeed] = useState<number>(401.0);
   const [lowerLimit, setLowerLimit] = useState<number>(417.20);
   const [upperLimit, setUpperLimit] = useState<number>(421.93);
+  const [wakuwakuTypeCount, setWakuwakuTypeCount] = useState<number>(3); // わくわくの実の種類数
   const [results, setResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasCalculated, setHasCalculated] = useState<boolean>(false);
 
   const handleSpeedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHasCalculated(false);
     setSpeed(parseFloat(e.target.value));
   };
 
@@ -43,19 +45,17 @@ const SpeedTool = () => {
     setUpperLimit(parseFloat(e.target.value));
   };
 
+  const handleWakuwakuTypeCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWakuwakuTypeCount(parseInt(e.target.value, 10));
+  };
+
   const isInSpeedRange = (speed: number, range: [number, number] = [lowerLimit, upperLimit]) => {
     return range[0] <= speed && speed <= range[1];
   };
 
   const adjustSpeed = (inputSpeed: number) => {
     const wakuwakuMaster = wakuwakuSpeedMaster;
-    const patterns = {
-      count1: [],
-      count2: [],
-      count3: [],
-      count4: [],
-      count5: [],
-    };
+    const patterns = []; // 結果を保持する配列に変更
     const checkedPatterns = new Set<string>();
 
     const generatePatternString = (keys: string[]) => keys.join("\n");
@@ -66,7 +66,7 @@ const SpeedTool = () => {
         const patternString = generatePatternString(keys);
         if (!checkedPatterns.has(patternString)) {
           checkedPatterns.add(patternString);
-          patterns[`count${keys.length}`].push({
+          patterns.push({
             wakuwakuList: patternString,
             totalValue: Math.round(addSpeed * 100) / 100,
             totalSpeed: Math.round(addedSpeed * 100) / 100,
@@ -83,34 +83,14 @@ const SpeedTool = () => {
       }
     }
 
-    // 2つ
-    for (const key1 in wakuwakuMaster) {
-      for (const key2 in wakuwakuMaster[key1]) {
-        for (const key3 in wakuwakuMaster) {
-          for (const key4 in wakuwakuMaster[key3]) {
-            if (key1 !== key3) {
-              const addSpeed = wakuwakuMaster[key1][key2] + wakuwakuMaster[key3][key4];
-              addPattern(
-                [
-                  `${key1} ${key2}(+${wakuwakuMaster[key1][key2]})`,
-                  `${key3} ${key4}(+${wakuwakuMaster[key3][key4]})`
-                ],
-                addSpeed
-              );
-            }
-          }
-        }
-      }
-    }
-
-    // 3つから5つまで
+    // 2つ以上の組み合わせ
     const recursivePatternSearch = (
       currentKeys: string[],
       currentSpeed: number,
       depth: number,
       usedKeys: Set<string>
     ) => {
-      if (depth > 5) return;
+      if (depth > wakuwakuTypeCount) return;
 
       for (const key1 in wakuwakuMaster) {
         if (usedKeys.has(key1)) continue;
@@ -126,7 +106,6 @@ const SpeedTool = () => {
       }
     };
 
-    // 初期呼び出し
     for (const key1 in wakuwakuMaster) {
       for (const key2 in wakuwakuMaster[key1]) {
         recursivePatternSearch(
@@ -138,8 +117,7 @@ const SpeedTool = () => {
       }
     }
 
-    console.log(patterns);
-    return patterns;
+    return patterns; // オブジェクトではなく、単一の配列として結果を返す
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -213,6 +191,25 @@ const SpeedTool = () => {
         />
       </FormControl>
 
+      <FormControl isRequired mt={4}>
+        <FormLabel fontWeight={600} htmlFor="wakuwakuTypeCount">
+          わくわくの実の種類数
+          <Text as="span" color="red.500" fontSize="xs">
+            （1〜6の値を指定できます。種類を増やすと計算に時間がかかる場合があります）
+          </Text>
+        </FormLabel>
+        <Input 
+          id="wakuwakuTypeCount" 
+          name="wakuwakuTypeCount" 
+          type="number" 
+          step="1" 
+          min={1}
+          max={6}
+          value={wakuwakuTypeCount} 
+          onChange={handleWakuwakuTypeCountChange} 
+        />
+      </FormControl>
+
       <Button mt={4} colorScheme="blue" bg="blue.400" onClick={handleSubmit} type="submit" isLoading={isLoading}>
         計算する！
       </Button>
@@ -248,33 +245,31 @@ const SpeedTool = () => {
           </VStack>
         ) : hasCalculated && (
           <>
-            {Object.values(results).every((count) => count.length === 0) ? (
+            {results.length === 0 ? (
               <Text fontSize="lg" color="red.500" textAlign="center">
                 {`${speed}kmは調整可能なパターンが見つかりませんでした`}
               </Text>
             ) : (
-              Object.entries(results).map(([key, patterns]) =>
-                patterns.map((pattern: any, index: number) => (
-                  <Flex key={`${key}-${index}`} mb={4} p={3} borderWidth="1px" rounded="md" bg="gray.50" direction={{ base: "column", md: "row" }} spacing={4}>
-                    <Box flex={1} pr={{ md: 4 }}>
-                      <Text fontWeight="bold" fontSize="sm">
-                        パターン {index + 1}:
-                      </Text>
-                      <Text whiteSpace="pre-line" fontSize="sm">
-                        {pattern.wakuwakuList}
-                      </Text>
-                    </Box>
-                    <Box flex={1} pl={{ md: 4 }}>
-                      <Text fontWeight="bold" fontSize="sm">
-                        合計: {pattern.totalValue} 増加
-                      </Text>
-                      <Text fontSize="sm">
-                        スピード: {pattern.totalSpeed} km/h
-                      </Text>
-                    </Box>
-                  </Flex>
-                ))
-              )
+              results.map((pattern, index: number) => (
+                <Flex key={index} mb={4} p={3} borderWidth="1px" rounded="md" bg="gray.50" direction={{ base: "column", md: "row" }} spacing={4}>
+                  <Box flex={1} pr={{ md: 4 }}>
+                    <Text fontWeight="bold" fontSize="sm">
+                      パターン {index + 1}:
+                    </Text>
+                    <Text whiteSpace="pre-line" fontSize="sm">
+                      {pattern.wakuwakuList}
+                    </Text>
+                  </Box>
+                  <Box flex={1} pl={{ md: 4 }}>
+                    <Text fontWeight="bold" fontSize="sm">
+                      合計: {pattern.totalValue} 増加
+                    </Text>
+                    <Text fontSize="sm">
+                      スピード: {pattern.totalSpeed} km/h
+                    </Text>
+                  </Box>
+                </Flex>
+              ))
             )}
           </>
         )}
