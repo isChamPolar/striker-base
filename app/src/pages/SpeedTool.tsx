@@ -12,16 +12,24 @@ import {
   Th, 
   Td, 
   Collapse, 
-  useDisclosure 
+  useDisclosure,
+  Spinner,
+  VStack,
+  HStack,
+  Text,
+  Flex
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { getSortedWakuwaku } from '../constants/wakuwakuMaster';
+import { getSortedWakuwaku, wakuwakuSpeedMaster } from '../constants/wakuwakuMaster';
 
 const SpeedTool = () => {
   const { isOpen, onToggle } = useDisclosure();
   const [speed, setSpeed] = useState<number>(401.0);
   const [lowerLimit, setLowerLimit] = useState<number>(417.20);
   const [upperLimit, setUpperLimit] = useState<number>(421.93);
+  const [results, setResults] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasCalculated, setHasCalculated] = useState<boolean>(false);
 
   const handleSpeedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSpeed(parseFloat(e.target.value));
@@ -35,9 +43,114 @@ const SpeedTool = () => {
     setUpperLimit(parseFloat(e.target.value));
   };
 
+  const isInSpeedRange = (speed: number, range: [number, number] = [lowerLimit, upperLimit]) => {
+    return range[0] <= speed && speed <= range[1];
+  };
+
+  const adjustSpeed = (inputSpeed: number) => {
+    const wakuwakuMaster = wakuwakuSpeedMaster;
+    const patterns = {
+      count1: [],
+      count2: [],
+      count3: [],
+      count4: [],
+      count5: [],
+    };
+    const checkedPatterns = new Set<string>();
+
+    const generatePatternString = (keys: string[]) => keys.join("\n");
+
+    const addPattern = (keys: string[], addSpeed: number) => {
+      const addedSpeed = inputSpeed + addSpeed;
+      if (isInSpeedRange(addedSpeed)) {
+        const patternString = generatePatternString(keys);
+        if (!checkedPatterns.has(patternString)) {
+          checkedPatterns.add(patternString);
+          patterns[`count${keys.length}`].push({
+            wakuwakuList: patternString,
+            totalValue: Math.round(addSpeed * 100) / 100,
+            totalSpeed: Math.round(addedSpeed * 100) / 100,
+          });
+        }
+      }
+    };
+
+    // 1つ
+    for (const key1 in wakuwakuMaster) {
+      for (const key2 in wakuwakuMaster[key1]) {
+        const addSpeed = wakuwakuMaster[key1][key2];
+        addPattern([`${key1} ${key2}(+${addSpeed})`], addSpeed);
+      }
+    }
+
+    // 2つ
+    for (const key1 in wakuwakuMaster) {
+      for (const key2 in wakuwakuMaster[key1]) {
+        for (const key3 in wakuwakuMaster) {
+          for (const key4 in wakuwakuMaster[key3]) {
+            if (key1 !== key3) {
+              const addSpeed = wakuwakuMaster[key1][key2] + wakuwakuMaster[key3][key4];
+              addPattern(
+                [
+                  `${key1} ${key2}(+${wakuwakuMaster[key1][key2]})`,
+                  `${key3} ${key4}(+${wakuwakuMaster[key3][key4]})`
+                ],
+                addSpeed
+              );
+            }
+          }
+        }
+      }
+    }
+
+    // 3つから5つまで
+    const recursivePatternSearch = (
+      currentKeys: string[],
+      currentSpeed: number,
+      depth: number,
+      usedKeys: Set<string>
+    ) => {
+      if (depth > 5) return;
+
+      for (const key1 in wakuwakuMaster) {
+        if (usedKeys.has(key1)) continue;
+
+        for (const key2 in wakuwakuMaster[key1]) {
+          const newKeys = [...currentKeys, `${key1} ${key2}(+${wakuwakuMaster[key1][key2]})`];
+          const newSpeed = currentSpeed + wakuwakuMaster[key1][key2];
+          addPattern(newKeys, newSpeed);
+          usedKeys.add(key1);
+          recursivePatternSearch(newKeys, newSpeed, depth + 1, usedKeys);
+          usedKeys.delete(key1);
+        }
+      }
+    };
+
+    // 初期呼び出し
+    for (const key1 in wakuwakuMaster) {
+      for (const key2 in wakuwakuMaster[key1]) {
+        recursivePatternSearch(
+          [`${key1} ${key2}(+${wakuwakuMaster[key1][key2]})`],
+          wakuwakuMaster[key1][key2],
+          2,
+          new Set([key1])
+        );
+      }
+    }
+
+    console.log(patterns);
+    return patterns;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("計算結果を表示します");
+    setIsLoading(true);
+    setTimeout(() => {
+      const pat = adjustSpeed(speed);
+      setResults(pat);
+      setIsLoading(false);
+      setHasCalculated(true);
+    }, 500); // 500ms delay to simulate loading
   };
 
   return (
@@ -100,11 +213,11 @@ const SpeedTool = () => {
         />
       </FormControl>
 
-      <Button mt={4} colorScheme="blue" bg="blue.400" onClick={handleSubmit} type="submit">
+      <Button mt={4} colorScheme="blue" bg="blue.400" onClick={handleSubmit} type="submit" isLoading={isLoading}>
         計算する！
       </Button>
 
-      <Button mt={4} colorScheme="blue" bg="blue.400" onClick={onToggle} className="toggle-button">
+      <Button mt={4} ml={4} colorScheme="blue" bg="blue.400" onClick={onToggle} className="toggle-button">
         加速の実一覧表: 開く/閉じる
       </Button>
 
@@ -126,6 +239,46 @@ const SpeedTool = () => {
           </Tbody>
         </Table>
       </Collapse>
+
+      <Box mt={8} id="result">
+        {isLoading ? (
+          <VStack>
+            <Spinner size="xl" />
+            <Text>計算中...</Text>
+          </VStack>
+        ) : hasCalculated && (
+          <>
+            {Object.values(results).every((count) => count.length === 0) ? (
+              <Text fontSize="lg" color="red.500" textAlign="center">
+                {`${speed}kmは調整可能なパターンが見つかりませんでした`}
+              </Text>
+            ) : (
+              Object.entries(results).map(([key, patterns]) =>
+                patterns.map((pattern: any, index: number) => (
+                  <Flex key={`${key}-${index}`} mb={4} p={3} borderWidth="1px" rounded="md" bg="gray.50" direction={{ base: "column", md: "row" }} spacing={4}>
+                    <Box flex={1} pr={{ md: 4 }}>
+                      <Text fontWeight="bold" fontSize="sm">
+                        パターン {index + 1}:
+                      </Text>
+                      <Text whiteSpace="pre-line" fontSize="sm">
+                        {pattern.wakuwakuList}
+                      </Text>
+                    </Box>
+                    <Box flex={1} pl={{ md: 4 }}>
+                      <Text fontWeight="bold" fontSize="sm">
+                        合計: {pattern.totalValue} 増加
+                      </Text>
+                      <Text fontSize="sm">
+                        スピード: {pattern.totalSpeed} km/h
+                      </Text>
+                    </Box>
+                  </Flex>
+                ))
+              )
+            )}
+          </>
+        )}
+      </Box>
     </Box>
   );
 };
