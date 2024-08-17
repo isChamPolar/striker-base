@@ -6,8 +6,10 @@ import { About } from '../pages/About';
 import { Policy } from '../pages/Policy';
 // import ExpAdjuster from '../pages/ExpAdjuster';
 // import ExCounter from '../pages/ExCounter';
+import useGA4 from '../hooks/useGA4';
 
 const AppRoutes = () => {
+  useGA4();
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
