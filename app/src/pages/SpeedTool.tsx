@@ -15,7 +15,6 @@ import {
   useDisclosure,
   Spinner,
   VStack,
-  HStack,
   Text,
   Flex
 } from '@chakra-ui/react';
@@ -31,6 +30,7 @@ const SpeedTool = () => {
   const [results, setResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasCalculated, setHasCalculated] = useState<boolean>(false);
+  const [visibleResultsCount, setVisibleResultsCount] = useState<number>(5); // 表示する結果の数
 
   const handleSpeedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHasCalculated(false);
@@ -53,10 +53,11 @@ const SpeedTool = () => {
     return range[0] <= speed && speed <= range[1];
   };
 
-  const adjustSpeed = (inputSpeed: number) => {
+  const adjustSpeed = (inputSpeed: number, maxPatterns: number = Infinity) => {
     const wakuwakuMaster = wakuwakuSpeedMaster;
     const patterns = []; // 結果を保持する配列に変更
     const checkedPatterns = new Set<string>();
+    let patternCount = 0; // パターンカウント
 
     const generatePatternString = (keys: string[]) => keys.join("\n");
 
@@ -71,6 +72,8 @@ const SpeedTool = () => {
             totalValue: Math.round(addSpeed * 100) / 100,
             totalSpeed: Math.round(addedSpeed * 100) / 100,
           });
+          patternCount++;
+          if (patternCount >= maxPatterns) return patterns; // 最大パターン数に達したら停止
         }
       }
     };
@@ -80,6 +83,7 @@ const SpeedTool = () => {
       for (const key2 in wakuwakuMaster[key1]) {
         const addSpeed = wakuwakuMaster[key1][key2];
         addPattern([`${key1} ${key2}(+${addSpeed})`], addSpeed);
+        if (patternCount >= maxPatterns) return patterns;
       }
     }
 
@@ -90,7 +94,7 @@ const SpeedTool = () => {
       depth: number,
       usedKeys: Set<string>
     ) => {
-      if (depth > wakuwakuTypeCount) return;
+      if (depth > wakuwakuTypeCount || patternCount >= maxPatterns) return;
 
       for (const key1 in wakuwakuMaster) {
         if (usedKeys.has(key1)) continue;
@@ -102,6 +106,7 @@ const SpeedTool = () => {
           usedKeys.add(key1);
           recursivePatternSearch(newKeys, newSpeed, depth + 1, usedKeys);
           usedKeys.delete(key1);
+          if (patternCount >= maxPatterns) return;
         }
       }
     };
@@ -114,6 +119,7 @@ const SpeedTool = () => {
           2,
           new Set([key1])
         );
+        if (patternCount >= maxPatterns) return patterns;
       }
     }
 
@@ -123,12 +129,23 @@ const SpeedTool = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setVisibleResultsCount(5); // 表示する結果の数をリセット
     setTimeout(() => {
-      const pat = adjustSpeed(speed);
+      const pat = adjustSpeed(speed, 5);
       setResults(pat);
       setIsLoading(false);
       setHasCalculated(true);
     }, 500); // 500ms delay to simulate loading
+  };
+
+  const handleLoadMore = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      const moreResults = adjustSpeed(speed, visibleResultsCount + 5); // 追加で5つ計算
+      setResults(moreResults);
+      setVisibleResultsCount(visibleResultsCount + 5);
+      setIsLoading(false);
+    }, 500);
   };
 
   return (
@@ -193,11 +210,11 @@ const SpeedTool = () => {
 
       <FormControl isRequired mt={4}>
         <FormLabel fontWeight={600} htmlFor="wakuwakuTypeCount">
-          わくわくの実の種類数
-          <Text as="span" color="red.500" fontSize="xs">
-            （1〜6の値を指定できます。種類を増やすと計算に時間がかかる場合があります）
-          </Text>
+          わくわくの実の種類数(上限)
         </FormLabel>
+        <Text as="span" color="red.500" fontSize="xs">
+            ※1〜6の値を指定できます。種類を増やすと計算に時間がかかる場合があります）
+        </Text>
         <Input 
           id="wakuwakuTypeCount" 
           name="wakuwakuTypeCount" 
@@ -270,6 +287,11 @@ const SpeedTool = () => {
                   </Box>
                 </Flex>
               ))
+            )}
+            {results.length >= visibleResultsCount && (
+              <Button mt={4} colorScheme="blue" bg="blue.400" onClick={handleLoadMore}>
+                さらに計算する
+              </Button>
             )}
           </>
         )}
