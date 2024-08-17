@@ -36,7 +36,7 @@ const SocialButton = ({
   
 const XTwitterButton: React.FC = () => {
     return (
-        <SocialButton label={'X'} href={'#'}>
+        <SocialButton label={'X'} href={'https://x.com/isChamPolar'}>
             <FaXTwitter />
         </SocialButton>
     );
@@ -44,7 +44,7 @@ const XTwitterButton: React.FC = () => {
 
 const YouTubeButton: React.FC = () => {
     return (
-        <SocialButton label={'YouTube'} href={'#'}>
+        <SocialButton label={'YouTube'} href={'https://www.youtube.com/@isChamPolar'}>
             <FaYoutube />
         </SocialButton>
     );
