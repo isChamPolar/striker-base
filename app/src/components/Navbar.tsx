@@ -28,8 +28,8 @@ export default function Navbar() {
     <Box>
       <Flex
         bg={'white'}
-        color={'gray.600'}
-        minH={'60px'}
+        color={'gray.800'}
+        minH={'80px'}
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
@@ -67,10 +67,9 @@ export default function Navbar() {
   )
 }
 
-
 const DesktopNav = () => {
-  const linkColor = 'gray.600'
-  const linkHoverColor = 'gray.800'
+  const linkColor = 'gray.900'
+  const linkHoverColor = 'gray.900'
   const popoverContentBgColor = 'white'
 
   return (
@@ -83,8 +82,8 @@ const DesktopNav = () => {
                 as="a"
                 p={2}
                 href={navItem.href ?? '#'}
-                fontSize={'sm'}
-                fontWeight={500}
+                fontSize={'md'}
+                fontWeight={700}
                 color={linkColor}
                 _hover={{
                   textDecoration: 'none',
@@ -131,10 +130,12 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
           <Text
             transition={'all .3s ease'}
             _groupHover={{ color: 'blue.400' }}
-            fontWeight={500}>
+            fontWeight={500}
+            color={'gray.800'}
+          >
             {label}
           </Text>
-          <Text fontSize={'sm'}>{subLabel}</Text>
+          <Text fontSize={'sm'} color={'gray.700'}>{subLabel}</Text>
         </Box>
         <Flex
           transition={'all .3s ease'}
@@ -175,7 +176,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         _hover={{
           textDecoration: 'none',
         }}>
-        <Text fontWeight={600} color={'gray.600'}>
+        <Text fontWeight={600} color={'gray.800'}>
           {label}
         </Text>
         {children && (
@@ -222,7 +223,7 @@ const NAV_ITEMS: Array<NavItem> = [
     children: [
       {
         label: 'スピード調整ツール',
-        subLabel: 'わくわくの実を用いてスピードを調整したいときに使います。',
+        subLabel: 'わくわくの実を用いてモンスターのスピードを調整したいときに利用できます。',
         href: '/speed-tool',
       },
       {
@@ -232,27 +233,4 @@ const NAV_ITEMS: Array<NavItem> = [
       },
     ],
   },
-  // {
-  //   label: 'Find Work',
-  //   children: [
-  //     {
-  //       label: 'Job Board',
-  //       subLabel: 'Find your dream design job',
-  //       href: '#',
-  //     },
-  //     {
-  //       label: 'Freelance Projects',
-  //       subLabel: 'An exclusive list for contract work',
-  //       href: '#',
-  //     },
-  //   ],
-  // },
-  // {
-  //   label: 'Learn Design',
-  //   href: '#',
-  // },
-  // {
-  //   label: 'Hire Designers',
-  //   href: '#',
-  // },
 ]
