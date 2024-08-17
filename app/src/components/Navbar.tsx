@@ -5,14 +5,12 @@ import {
   Flex,
   Text,
   IconButton,
-  Button,
   Stack,
   Collapse,
   Icon,
   Popover,
   PopoverTrigger,
   PopoverContent,
-  useBreakpointValue,
   useDisclosure,
 } from '@chakra-ui/react'
 import {
@@ -37,53 +35,29 @@ export default function Navbar() {
         borderBottom={1}
         borderStyle={'solid'}
         borderColor={'gray.200'}
-        align={'center'}>
-        <Flex
-          flex={{ base: 1, md: 'auto' }}
-          ml={{ base: -2 }}
-          display={{ base: 'flex', md: 'none' }}>
-          <IconButton
-            onClick={onToggle}
-            icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
-            variant={'ghost'}
-            aria-label={'Toggle Navigation'}
-          />
-        </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-          <Text
-            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            fontFamily={'heading'}
-            color={'gray.800'}>
-            <Logo />
-          </Text>
-
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-            <DesktopNav />
-          </Flex>
-        </Flex>
-
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={'flex-end'}
-          direction={'row'}
-          spacing={6}>
-          <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
-            Sign In
-          </Button>
-          <Button
-            as={'a'}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            href={'#'}
-            _hover={{
-              bg: 'pink.300',
-            }}>
-            Sign Up
-          </Button>
-        </Stack>
+        align={'center'}
+        justify={{ base: 'space-between', md: 'space-between' }}
+        position="relative"
+      >
+        <IconButton
+          onClick={onToggle}
+          icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
+          variant={'ghost'}
+          aria-label={'Toggle Navigation'}
+          color={'gray.800'}
+          display={{ base: 'block', md: 'none' }}
+        />
+        <Box
+          position="absolute"
+          left="50%"
+          transform="translateX(-50%)"
+          display={{ base: 'block', md: 'block' }}
+        >
+          <Logo />
+        </Box>
+        <Box display={{ base: 'none', md: 'block' }} ml={10}>
+          <DesktopNav />
+        </Box>
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
@@ -93,13 +67,14 @@ export default function Navbar() {
   )
 }
 
+
 const DesktopNav = () => {
   const linkColor = 'gray.600'
   const linkHoverColor = 'gray.800'
   const popoverContentBgColor = 'white'
 
   return (
-    <Stack direction={'row'} spacing={4}>
+    <Stack direction={'row'} spacing={4} alignItems="center">
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
@@ -178,7 +153,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 
 const MobileNav = () => {
   return (
-    <Stack bg={'white'} p={4} display={{ md: 'none' }}>
+    <Stack bg={'gray.100'} p={4} display={{ md: 'none' }}>
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
