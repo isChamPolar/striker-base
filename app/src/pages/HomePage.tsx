@@ -68,7 +68,7 @@ const HomePage = () => {
           py={6}
         >
           <Text fontSize={{ base: 'lg', md: '2xl' }} textAlign={'center'} maxW={'3xl'} lineHeight={{ base: '170%', md: '160%' }}>
-            このサイトは、全てのストライカーのために
+            このサイトは、人気ゲームアプリ「モンスターストライク」を愛する全てのストライカーのために
             <br />
             便利なツールや攻略情報を提供するサイトです。
             <br />
