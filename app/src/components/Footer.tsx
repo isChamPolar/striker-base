@@ -10,17 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { FaTwitter, FaYoutube } from 'react-icons/fa'
 import { ReactNode } from 'react'
-
-const Logo = (props: any) => {
-  return (
-    <img
-      src="../public/striker-base-icon.png"
-      alt="Logo"
-      width="60px"
-      {...props}
-    />
-  )
-}
+import { Logo } from './Logo'
 
 const SocialButton = ({
   children,

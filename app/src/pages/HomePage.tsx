@@ -5,6 +5,7 @@ const HomePage = () => {
     <Box p={4}>
       <Heading>ホームページ</Heading>
       {/* ホームページの内容をここに追加 */}
+      おいはひおぎほあえｇひおいは
     </Box>
   );
 };
