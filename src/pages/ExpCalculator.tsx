@@ -16,7 +16,7 @@ import {
   GridItem,
   useToast,
 } from '@chakra-ui/react';
-import { FiBarChart2, FiZap, FiClock, FiTarget, FiTrendingUp, FiActivity } from 'react-icons/fi';
+import { FiBarChart2, FiZap, FiClock, FiTarget, FiTrendingUp, FiActivity, FiRepeat } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { rankTable } from '../constants/rankTable';
 
@@ -526,8 +526,24 @@ const ExpCalculator = () => {
               >
                 <GridItem>
                   <HStack>
+                    <Icon as={FiRepeat} color="green.500" boxSize={6} />
+                    <Text fontSize="xl" fontWeight="bold" color="green.600">1日あたりの周回数</Text>
+                  </HStack>
+                  <Text fontSize="2xl" fontWeight="bold" color="green.700">{result.lapsPerDay.toLocaleString()} 周</Text>
+                </GridItem>
+              </Box>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+                shadow="md"
+                bg="white"
+              >
+                <GridItem>
+                  <HStack>
                     <Icon as={FiClock} color="blue.500" boxSize={6} />
-                    <Text fontSize="xl" fontWeight="bold" color="blue.600">1日の周回時間</Text>
+                    <Text fontSize="xl" fontWeight="bold" color="blue.600">1日あたりの周回時間</Text>
                   </HStack>
                   <Text fontSize="2xl" fontWeight="bold" color="blue.700">{result.hoursPerDay} h</Text>
                 </GridItem>
