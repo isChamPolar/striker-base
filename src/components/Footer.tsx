@@ -17,6 +17,7 @@ export default function SmallCentered() {
       borderTopWidth={1}
       borderStyle={'solid'}
       borderColor={'gray.200'}
+      pb={{ base: 'env(safe-area-inset-bottom)', md: 0 }} // PWA時に余白を追加
     >
       <Container
         as={Stack}
@@ -25,7 +26,6 @@ export default function SmallCentered() {
         spacing={2}
         justify={'center'}
         align={'center'}>
-        {/* <Logo /> */}
         <Stack direction={'row'} spacing={5}>
           <Box as="a" href={'/'}>
             トップ
@@ -68,11 +68,11 @@ export default function SmallCentered() {
           spacing={4}
           justify={{ base: 'center', md: 'space-between' }}
           align={{ base: 'center', md: 'center' }}>
-          <Text>© 2024 STRIKER BASE. All rights reserved</Text>
           <Stack direction={'row'} spacing={6}>
             <XTwitterButton />
             <YouTubeButton />
           </Stack>
+          <Text>© 2024 STRIKER BASE. All rights reserved</Text>
         </Container>
       </Box>
     </Box>
