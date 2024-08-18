@@ -16,7 +16,7 @@ import {
   GridItem,
   useToast,
 } from '@chakra-ui/react';
-import { FiBarChart2, FiZap, FiClock, FiTarget, FiTrendingUp, FiActivity, FiRepeat } from 'react-icons/fi';
+import { FiBarChart2, FiZap, FiClock, FiTarget, FiTrendingUp, FiActivity, FiRepeat, FiShare } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { rankTable } from '../constants/rankTable';
 
@@ -198,6 +198,22 @@ const ExpCalculator = () => {
       setIsLoading(false);
       setHasCalculated(true);
     }, 500);
+  };
+
+  const handlePostToX = () => {
+    if (!result) return;
+
+    const tweetText = encodeURIComponent(`
+#STRIKERBASE
+ランク ${currentRank} からランク ${targetRank} に上げるための必要な経験値は ${requiredExp.toLocaleString()} です！
+1周あたりの経験値は ${result.expPerLap.toLocaleString()}
+1日あたりの周回数は ${result.lapsPerDay.toLocaleString()} 周で、1日あたりの周回時間は ${result.hoursPerDay} 時間です！
+詳しくは ${window.location.href} でチェック！
+`);
+
+    const tweetUrl = `https://x.com/intent/tweet?text=${tweetText}`;
+
+    window.open(tweetUrl, "_blank");
   };
 
   return (
@@ -584,6 +600,19 @@ const ExpCalculator = () => {
           </>
         )}
       </Box>
+
+      {hasCalculated && (
+        <Button
+         mt={6}
+         bg="black"
+         type="submit"
+         color="white"
+         leftIcon={<Icon as={FiShare} />}
+         onClick={handlePostToX}
+        >
+        Xにポストする
+        </Button>
+      )}
     </Box>
   );
 };
