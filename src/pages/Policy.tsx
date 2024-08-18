@@ -1,5 +1,4 @@
-import { Box, Heading, Stack, Text, Avatar, Flex } from '@chakra-ui/react';
-import { XTwitterButton, YouTubeButton } from '../components/SocialButton';
+import { Box, Heading, Stack, Text } from '@chakra-ui/react';
 
 export const Policy = () => {
   return (

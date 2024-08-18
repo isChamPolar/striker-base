@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import theme from './theme';
 import Navbar from './components/Navbar';
 import { HelmetProvider } from 'react-helmet-async';
+import CookieConsentBanner from './components/CookieConsentBanner'; // 追加
 
 const App = () => (
   <HelmetProvider>
@@ -16,6 +17,7 @@ const App = () => (
             <AppRoutes />
           </Box>
           <Footer />
+          <CookieConsentBanner />
         </Box>
       </BrowserRouter>
     </ChakraProvider>
