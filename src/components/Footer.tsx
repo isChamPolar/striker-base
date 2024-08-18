@@ -49,11 +49,12 @@ export default function SmallCentered() {
           direction={{ base: 'column', md: 'row' }}
           spacing={4}
           justify={{ base: 'center', md: 'space-between' }}
-          align={{ base: 'center', md: 'center' }}
-          fontSize={12}
-        >
-          <Text>モンスターストライクはXFLAG様が配信するiOS・Android用ゲームアプリです。</Text>
-          <Link href='https://www.monster-strike.com/'>▶モンスターストライク公式サイト</Link>
+          align={{ base: 'center', md: 'center' }}>
+          <Stack direction={'row'} spacing={6}>
+            <XTwitterButton />
+            <YouTubeButton />
+          </Stack>
+          <Text>© 2024 STRIKER BASE. All rights reserved</Text>
         </Container>
       </Box>
       <Box
@@ -67,12 +68,11 @@ export default function SmallCentered() {
           direction={{ base: 'column', md: 'row' }}
           spacing={4}
           justify={{ base: 'center', md: 'space-between' }}
-          align={{ base: 'center', md: 'center' }}>
-          <Stack direction={'row'} spacing={6}>
-            <XTwitterButton />
-            <YouTubeButton />
-          </Stack>
-          <Text>© 2024 STRIKER BASE. All rights reserved</Text>
+          align={{ base: 'center', md: 'center' }}
+          fontSize={12}
+        >
+          <Text>モンスターストライクはXFLAG様が配信するiOS・Android用ゲームアプリです。</Text>
+          <Link href='https://www.monster-strike.com/'>▶モンスターストライク公式サイト</Link>
         </Container>
       </Box>
     </Box>

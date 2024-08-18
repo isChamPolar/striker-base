@@ -24,7 +24,7 @@ const CookieConsentBanner = () => {
           position="fixed"
           bottom="env(safe-area-inset-bottom)"
           width="100%"
-          bg="rgba(255, 255, 255, 0.9)"
+          bg="rgba(255, 255, 255, 0.8)"
           color="gray.800"
           py={2}
           px={4}
@@ -49,6 +49,8 @@ const CookieConsentBanner = () => {
               minW={{ base: '80%', md: '100px' }}
               px={4}
               py={2}
+              color="black" // テキストカラーを黒に設定
+              borderColor="gray.600" // ボタンの枠線カラーを濃いグレーに設定
             >
               同意する
             </Button>
