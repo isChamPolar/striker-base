@@ -20,6 +20,7 @@ import { FiBarChart2, FiZap, FiClock, FiTarget, FiTrendingUp, FiActivity, FiRepe
 import { useState, useEffect } from 'react';
 import { rankTable } from '../constants/rankTable';
 import { Helmet } from 'react-helmet-async';
+import { cookieManager } from '../lib/cookieManager';
 
 const calculateExp = (rank: number): number => {
   const maxRankInTable = 2000;
@@ -34,19 +35,19 @@ const calculateExp = (rank: number): number => {
 };
 
 const ExpCalculator = () => {
-  const [currentRank, setCurrentRank] = useState<number>(1500);
-  const [currentExp, setCurrentExp] = useState<number>(calculateExp(1500));
-  const [targetRank, setTargetRank] = useState<number>(2000);
-  const [targetExp, setTargetExp] = useState<number>(calculateExp(2000));
-  const [targetYear, setTargetYear] = useState<number>(new Date().getFullYear());
-  const [targetMonth, setTargetMonth] = useState<number>(new Date().getMonth() + 1);
-  const [targetDay, setTargetDay] = useState<number>(new Date().getDate() + 1);
-  const [learningLevel, setLearningLevel] = useState<string>('1.65');
-  const [lapExp, setLapExp] = useState<number>(20000);
-  const [lapsPerHour, setLapsPerHour] = useState<number>(60);
-  const [expMultiplier, setExpMultiplier] = useState<string>('3');
-  const [learningPower, setLearningPower] = useState<string>('1.75');
-  const [monpassMultiplier, setMonpassMultiplier] = useState<string>('1.0');
+  const [currentRank, setCurrentRank] = useState<number>(() => parseInt(cookieManager.getCookie('currentRank')) || 1500);
+  const [currentExp, setCurrentExp] = useState<number>(() => calculateExp(parseInt(cookieManager.getCookie('currentRank')) || 1500));
+  const [targetRank, setTargetRank] = useState<number>(() => parseInt(cookieManager.getCookie('targetRank')) || 2000);
+  const [targetExp, setTargetExp] = useState<number>(() => calculateExp(parseInt(cookieManager.getCookie('targetRank')) || 2000));
+  const [targetYear, setTargetYear] = useState<number>(() => parseInt(cookieManager.getCookie('targetYear')) || new Date().getFullYear());
+  const [targetMonth, setTargetMonth] = useState<number>(() => parseInt(cookieManager.getCookie('targetMonth')) || new Date().getMonth() + 1);
+  const [targetDay, setTargetDay] = useState<number>(() => parseInt(cookieManager.getCookie('targetDay')) || new Date().getDate() + 1);
+  const [learningLevel, setLearningLevel] = useState<string>(() => cookieManager.getCookie('learningLevel') || '1.65');
+  const [lapExp, setLapExp] = useState<number>(() => parseInt(cookieManager.getCookie('lapExp')) || 20000);
+  const [lapsPerHour, setLapsPerHour] = useState<number>(() => parseInt(cookieManager.getCookie('lapsPerHour')) || 60);
+  const [expMultiplier, setExpMultiplier] = useState<string>(() => cookieManager.getCookie('expMultiplier') || '3');
+  const [learningPower, setLearningPower] = useState<string>(() => cookieManager.getCookie('learningPower') || '1.75');
+  const [monpassMultiplier, setMonpassMultiplier] = useState<string>(() => cookieManager.getCookie('monpassMultiplier') || '1.0');
   const [remainingDays, setRemainingDays] = useState<number>(0);
   const [requiredExp, setRequiredExp] = useState<number>(0);
   const [result, setResult] = useState<{
@@ -62,6 +63,21 @@ const ExpCalculator = () => {
   const [hasCalculated, setHasCalculated] = useState<boolean>(false);
   const [dateError, setDateError] = useState<string | null>(null);
   const toast = useToast();
+
+  useEffect(() => {
+    // 保存するクッキーのセット
+    cookieManager.setCookie('currentRank', currentRank.toString(), 14);
+    cookieManager.setCookie('targetRank', targetRank.toString(), 14);
+    cookieManager.setCookie('targetYear', targetYear.toString(), 14);
+    cookieManager.setCookie('targetMonth', targetMonth.toString(), 14);
+    cookieManager.setCookie('targetDay', targetDay.toString(), 14);
+    cookieManager.setCookie('learningLevel', learningLevel, 14);
+    cookieManager.setCookie('lapExp', lapExp.toString(), 14);
+    cookieManager.setCookie('lapsPerHour', lapsPerHour.toString(), 14);
+    cookieManager.setCookie('expMultiplier', expMultiplier, 14);
+    cookieManager.setCookie('learningPower', learningPower, 14);
+    cookieManager.setCookie('monpassMultiplier', monpassMultiplier, 14);
+  }, [currentRank, targetRank, targetYear, targetMonth, targetDay, learningLevel, lapExp, lapsPerHour, expMultiplier, learningPower, monpassMultiplier]);
 
   const findRankByExp = (exp: number): number | null => {
     const maxRankInTable = 2000;
