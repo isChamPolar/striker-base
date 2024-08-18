@@ -6,21 +6,18 @@ import {
   Heading,
   Input,
   Select,
-  useDisclosure,
   Spinner,
   VStack,
   Text,
   Flex,
   HStack,
   Icon,
-  Table,
-  Tbody,
-  Tr,
-  Td,
+  SimpleGrid,
+  GridItem,
   useToast,
 } from '@chakra-ui/react';
+import { FiBarChart2, FiZap, FiClock, FiTarget, FiTrendingUp, FiActivity } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
-import { FiBarChart2 } from 'react-icons/fi';
 import { rankTable } from '../constants/rankTable';
 
 const calculateExp = (rank: number): number => {
@@ -46,11 +43,23 @@ const ExpCalculator = () => {
   const [learningLevel, setLearningLevel] = useState<string>('1.65');
   const [lapExp, setLapExp] = useState<number>(20000);
   const [lapsPerHour, setLapsPerHour] = useState<number>(60);
+  const [expMultiplier, setExpMultiplier] = useState<string>('3');
+  const [learningPower, setLearningPower] = useState<string>('1.75');
+  const [monpassMultiplier, setMonpassMultiplier] = useState<string>('1.0');
   const [remainingDays, setRemainingDays] = useState<number>(0);
   const [requiredExp, setRequiredExp] = useState<number>(0);
-  const [results, setResults] = useState<{ [key: string]: number } | null>(null);
+  const [result, setResult] = useState<{
+    finalExpMultiplier: number;
+    expPerLap: number;
+    lapsPerDay: number;
+    totalLaps: number;
+    hoursPerDay: number;
+    totalHours: number;
+    expPerHour: number;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasCalculated, setHasCalculated] = useState<boolean>(false);
+  const [dateError, setDateError] = useState<string | null>(null);
   const toast = useToast();
 
   const findRankByExp = (exp: number): number | null => {
@@ -101,20 +110,34 @@ const ExpCalculator = () => {
   };
 
   const validateTargetDate = (): boolean => {
-    const today = new Date();
     const target = new Date(targetYear, targetMonth - 1, targetDay);
 
-    if (target <= today) {
-      toast({
-        title: 'エラー',
-        description: '目標年月日は未来の日付を選択してください。',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+    if (targetYear < 1900 || targetYear > 2200) {
+      setDateError('年は1900～2200の間で入力してください。');
       return false;
     }
+    if (targetMonth < 1 || targetMonth > 12) {
+      setDateError('月は1～12の間で入力してください。');
+      return false;
+    }
+    const lastDayOfMonth = new Date(targetYear, targetMonth, 0).getDate();
+    if (targetDay < 1 || targetDay > lastDayOfMonth) {
+      setDateError(`日付は1～${lastDayOfMonth}の間で入力してください。`);
+      return false;
+    }
+
+    const today = new Date();
+    if (target <= today) {
+      setDateError('目標年月日は未来の日付を選択してください。');
+      return false;
+    }
+
+    setDateError(null);
     return true;
+  };
+
+  const handleTargetDateBlur = () => {
+    validateTargetDate();
   };
 
   useEffect(() => {
@@ -132,18 +155,26 @@ const ExpCalculator = () => {
   }, [targetExp, currentExp]);
 
   const calculateResults = () => {
-    const expMultiplier = parseFloat(learningLevel);
-    const totalExpPerLap = lapExp * expMultiplier;
-    const totalLaps = requiredExp / totalExpPerLap;
+    const finalExpMultiplier =
+      parseFloat(expMultiplier) *
+      parseFloat(learningPower) *
+      parseFloat(learningLevel) * 
+      parseFloat(monpassMultiplier);
+    const expPerLap = lapExp * finalExpMultiplier;
+    const totalLaps = requiredExp / expPerLap;
     const lapsPerDay = totalLaps / remainingDays;
     const hoursPerDay = lapsPerDay / lapsPerHour;
     const totalHours = totalLaps / lapsPerHour;
+    const expPerHour = expPerLap * lapsPerHour;
 
     return {
-      totalLaps,
-      lapsPerDay,
-      hoursPerDay,
-      totalHours,
+      finalExpMultiplier: finalExpMultiplier.toFixed(3),
+      expPerLap,
+      lapsPerDay: Math.ceil(lapsPerDay),
+      totalLaps: Math.ceil(totalLaps),
+      hoursPerDay: hoursPerDay.toFixed(2),
+      totalHours: totalHours.toFixed(2),
+      expPerHour: expPerHour.toFixed(0),
     };
   };
 
@@ -163,7 +194,7 @@ const ExpCalculator = () => {
     setIsLoading(true);
     setTimeout(() => {
       const result = calculateResults();
-      setResults(result);
+      setResult(result);
       setIsLoading(false);
       setHasCalculated(true);
     }, 500);
@@ -259,9 +290,11 @@ const ExpCalculator = () => {
           />
         </FormControl>
       </Flex>
+
       <Text as="span" color="red.500" fontSize="xs">
-        ※2000以降では1ランクあたり4330881として計算します。
+        ※2000以降のランクでは1ランクあたりに必要な経験値を4330881として計算します。
       </Text>
+
       <FormControl isRequired mt={4}>
         <FormLabel fontWeight={600}>目標年月日</FormLabel>
         <Flex align="center">
@@ -274,6 +307,7 @@ const ExpCalculator = () => {
               placeholder="例: 2024"
               value={targetYear || ''}
               onChange={(e) => setTargetYear(parseInt(e.target.value))}
+              onBlur={handleTargetDateBlur}
               borderColor="gray.400"
               focusBorderColor="blue.400"
             />
@@ -287,6 +321,7 @@ const ExpCalculator = () => {
               placeholder="例: 12"
               value={targetMonth || ''}
               onChange={(e) => setTargetMonth(parseInt(e.target.value))}
+              onBlur={handleTargetDateBlur}
               borderColor="gray.400"
               focusBorderColor="blue.400"
             />
@@ -300,11 +335,17 @@ const ExpCalculator = () => {
               placeholder="例: 25"
               value={targetDay || ''}
               onChange={(e) => setTargetDay(parseInt(e.target.value))}
+              onBlur={handleTargetDateBlur}
               borderColor="gray.400"
               focusBorderColor="blue.400"
             />
           </FormControl>
         </Flex>
+        {dateError && (
+          <Text color="red.500" fontSize="sm" mt={2}>
+            {dateError}
+          </Text>
+        )}
       </FormControl>
 
       <FormControl isRequired mt={4}>
@@ -346,6 +387,41 @@ const ExpCalculator = () => {
           focusBorderColor="blue.400"
         />
       </FormControl>
+
+      <FormControl isRequired mt={4}>
+        <FormLabel fontWeight={600} htmlFor="expMultiplier">経験値倍率</FormLabel>
+        <Select
+          id="expMultiplier"
+          name="expMultiplier"
+          value={expMultiplier}
+          onChange={(e) => setExpMultiplier(e.target.value)}
+          borderColor="gray.400"
+          focusBorderColor="blue.400"
+        >
+          <option value="3">エラベルベル(3倍)</option>
+          <option value="2">経験値2倍イベント(2倍)</option>
+          <option value="1">等倍</option>
+        </Select>
+      </FormControl>
+
+      <FormControl isRequired mt={4}>
+        <FormLabel fontWeight={600} htmlFor="learningPower">学びのパワー</FormLabel>
+        <Select
+          id="learningPower"
+          name="learningPower"
+          value={learningPower}
+          onChange={(e) => setLearningPower(e.target.value)}
+          borderColor="gray.400"
+          focusBorderColor="blue.400"
+        >
+          <option value="1.75">メイン 学びスポット+(75%UP)</option>
+          <option value="1.5">メイン 学びスポット(50%UP)</option>
+          <option value="1.5">サブ 学びスポット+(50%UP)</option>
+          <option value="1.25">サブ 学びスポット(25%UP)</option>
+          <option value="1.0">学びスポットなし</option>
+        </Select>
+      </FormControl>
+
       <FormControl isRequired mt={4}>
         <FormLabel fontWeight={600} htmlFor="learningLevel">学びの力 等級</FormLabel>
         <Select
@@ -364,6 +440,21 @@ const ExpCalculator = () => {
         </Select>
       </FormControl>
 
+      <FormControl isRequired mt={4}>
+        <FormLabel fontWeight={600} htmlFor="monpassMultiplier">モンパス会員 マルチプレイ</FormLabel>
+        <Select
+          id="monpassMultiplier"
+          name="monpassMultiplier"
+          value={monpassMultiplier}
+          onChange={(e) => setMonpassMultiplier(e.target.value)}
+          borderColor="gray.400"
+          focusBorderColor="blue.400"
+        >
+          <option value="1.05">有効(5%UP)</option>
+          <option value="1.0">無効</option>
+        </Select>
+      </FormControl>
+
       <Button mt={6} colorScheme="blue" bg="blue.400" onClick={handleSubmit} type="submit" isLoading={isLoading} color="white">
         計算する！
       </Button>
@@ -374,39 +465,106 @@ const ExpCalculator = () => {
             <Spinner size="xl" />
             <Text>計算中...</Text>
           </VStack>
-        ) : hasCalculated && results !== null && (
+        ) : hasCalculated && result !== null && (
           <>
-            <Text fontSize="lg" color="blue.500" textAlign="center" mb={4}>
-              必要な経験値: {requiredExp}
-            </Text>
-            <Table variant="simple">
-              <Tbody>
-                <Tr>
-                  <Td>周回方法</Td>
-                  <Td>{lapExp}</Td>
-                </Tr>
-                <Tr>
-                  <Td>1周あたりの経験値</Td>
-                  <Td>{lapExp * parseFloat(learningLevel)}</Td>
-                </Tr>
-                <Tr>
-                  <Td>1日分</Td>
-                  <Td>{Math.ceil(results.lapsPerDay)}</Td>
-                </Tr>
-                <Tr>
-                  <Td>目標まで</Td>
-                  <Td>{Math.ceil(results.totalLaps)}</Td>
-                </Tr>
-                <Tr>
-                  <Td>1日あたり何時間</Td>
-                  <Td>{results.hoursPerDay.toFixed(2)}</Td>
-                </Tr>
-                <Tr>
-                  <Td>目標まで何時間</Td>
-                  <Td>{results.totalHours.toFixed(2)}</Td>
-                </Tr>
-              </Tbody>
-            </Table>
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+                shadow="md"
+                bg="white"
+              >
+                <GridItem>
+                  <HStack>
+                    <Icon as={FiActivity} color="purple.500" boxSize={6} />
+                    <Text fontSize="xl" fontWeight="bold" color="purple.600">必要な経験値</Text>
+                  </HStack>
+                  <Text fontSize="2xl" fontWeight="bold" color="purple.700">{requiredExp.toLocaleString()}</Text>
+                </GridItem>
+              </Box>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+                shadow="md"
+                bg="white"
+              >
+                <GridItem>
+                  <HStack>
+                    <Icon as={FiTrendingUp} color="teal.500" boxSize={6} />
+                    <Text fontSize="xl" fontWeight="bold" color="teal.600">経験値倍率</Text>
+                  </HStack>
+                  <Text fontSize="2xl" fontWeight="bold" color="teal.700">{result.finalExpMultiplier} 倍</Text>
+                </GridItem>
+              </Box>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+                shadow="md"
+                bg="white"
+              >
+                <GridItem>
+                  <HStack>
+                    <Icon as={FiZap} color="yellow.500" boxSize={6} />
+                    <Text fontSize="xl" fontWeight="bold" color="yellow.600">1周あたりの経験値</Text>
+                  </HStack>
+                  <Text fontSize="2xl" fontWeight="bold" color="yellow.700">{result.expPerLap.toLocaleString()}</Text>
+                </GridItem>
+              </Box>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+                shadow="md"
+                bg="white"
+              >
+                <GridItem>
+                  <HStack>
+                    <Icon as={FiTarget} color="red.500" boxSize={6} />
+                    <Text fontSize="xl" fontWeight="bold" color="red.600">目標経験値までの周回数</Text>
+                  </HStack>
+                  <Text fontSize="2xl" fontWeight="bold" color="red.700">{result.totalLaps.toLocaleString()} 周</Text>
+                </GridItem>
+              </Box>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+                shadow="md"
+                bg="white"
+              >
+                <GridItem>
+                  <HStack>
+                    <Icon as={FiClock} color="blue.500" boxSize={6} />
+                    <Text fontSize="xl" fontWeight="bold" color="blue.600">1日あたりの周回時間</Text>
+                  </HStack>
+                  <Text fontSize="2xl" fontWeight="bold" color="blue.700">{result.hoursPerDay} h</Text>
+                </GridItem>
+              </Box>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+                shadow="md"
+                bg="white"
+              >
+                <GridItem>
+                  <HStack>
+                    <Icon as={FiClock} color="orange.500" boxSize={6} />
+                    <Text fontSize="xl" fontWeight="bold" color="orange.600">目標経験値までの周回時間</Text>
+                  </HStack>
+                  <Text fontSize="2xl" fontWeight="bold" color="orange.700">{result.totalHours} h</Text>
+                </GridItem>
+              </Box>
+            </SimpleGrid>
           </>
         )}
       </Box>
