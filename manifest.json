@@ -1,0 +1,18 @@
+{
+    "short_name": "STRIKER BASE",
+    "name": "STRIKER BASE - モンスト便利ツール",
+    "icons": [
+      {
+        "src": "/striker-base-icon.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "description": "STRIKER BASEは、モンストの攻略をサポートする便利ツールを提供します。",
+    "orientation": "portrait-primary"
+  }
+  
