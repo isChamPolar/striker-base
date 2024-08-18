@@ -23,6 +23,7 @@ import {
 import { useState } from 'react';
 import { getSortedWakuwaku, wakuwakuSpeedMaster } from '../constants/wakuwakuMaster';
 import { FiTrendingUp } from 'react-icons/fi';
+import { Helmet } from 'react-helmet-async';
 
 const SpeedTool = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -164,6 +165,16 @@ const SpeedTool = () => {
       as="form"
       onSubmit={handleSubmit}
     >
+    <Helmet>
+        <title>スピード調整ツール | STRIKER BASE - モンスト便利ツール</title>
+        <meta name="description" content="周回の効率アップ！どのわくわくの実をどれだけ付ければOKかすぐわかる！" />
+        <meta property="og:title" content="スピード調整ツール | STRIKER BASE - モンスト便利ツール" />
+        <meta property="og:description" content="今のスピードを入力して、どのわくわくの実をどれだけ付ければOKかすぐわかる！" />
+        <meta property="og:image" content="https://striker-base.com/og-image.png" />
+        <meta property="og:url" content="https://striker-base.com/speed-tool" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:image" content="https://striker-base.com/og-image.png" />
+    </Helmet>
     <HStack alignItems="center" mb={5}>
       <Icon as={FiTrendingUp} boxSize={8} color="blue.400" />
       <Heading

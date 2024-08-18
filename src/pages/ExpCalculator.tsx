@@ -19,6 +19,7 @@ import {
 import { FiBarChart2, FiZap, FiClock, FiTarget, FiTrendingUp, FiActivity, FiRepeat, FiShare } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { rankTable } from '../constants/rankTable';
+import { Helmet } from 'react-helmet-async';
 
 const calculateExp = (rank: number): number => {
   const maxRankInTable = 2000;
@@ -229,6 +230,16 @@ const ExpCalculator = () => {
       as="form"
       onSubmit={handleSubmit}
     >
+      <Helmet>
+        <title>ランク計算ツール | STRIKER BASE - モンスト便利ツール</title>
+        <meta name="description" content="ランク上げに必須！目標までの道のりをチェック！" />
+        <meta property="og:title" content="ランク計算ツール | STRIKER BASE - モンスト便利ツール" />
+        <meta property="og:description" content="目標ランクを入力！必要な経験値を計算できる便利ツール！" />
+        <meta property="og:image" content="https://striker-base.com/og-image.png" />
+        <meta property="og:url" content="https://striker-base.com/exp-calculator" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:image" content="https://striker-base.com/og-image.png" />
+      </Helmet>
       <HStack alignItems="center" mb={5}>
         <Icon as={FiBarChart2} boxSize={8} color="blue.400" />
         <Heading
