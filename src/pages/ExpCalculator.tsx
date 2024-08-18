@@ -526,10 +526,10 @@ const ExpCalculator = () => {
               >
                 <GridItem>
                   <HStack>
-                    <Icon as={FiTarget} color="red.500" boxSize={6} />
-                    <Text fontSize="xl" fontWeight="bold" color="red.600">目標経験値までの周回数</Text>
+                    <Icon as={FiClock} color="blue.500" boxSize={6} />
+                    <Text fontSize="xl" fontWeight="bold" color="blue.600">1日の周回時間</Text>
                   </HStack>
-                  <Text fontSize="2xl" fontWeight="bold" color="red.700">{result.totalLaps.toLocaleString()} 周</Text>
+                  <Text fontSize="2xl" fontWeight="bold" color="blue.700">{result.hoursPerDay} h</Text>
                 </GridItem>
               </Box>
               <Box
@@ -542,10 +542,10 @@ const ExpCalculator = () => {
               >
                 <GridItem>
                   <HStack>
-                    <Icon as={FiClock} color="blue.500" boxSize={6} />
-                    <Text fontSize="xl" fontWeight="bold" color="blue.600">1日あたりの周回時間</Text>
+                    <Icon as={FiTarget} color="red.500" boxSize={6} />
+                    <Text fontSize="xl" fontWeight="bold" color="red.600">目標経験値までの周回数</Text>
                   </HStack>
-                  <Text fontSize="2xl" fontWeight="bold" color="blue.700">{result.hoursPerDay} h</Text>
+                  <Text fontSize="2xl" fontWeight="bold" color="red.700">{result.totalLaps.toLocaleString()} 周</Text>
                 </GridItem>
               </Box>
               <Box
