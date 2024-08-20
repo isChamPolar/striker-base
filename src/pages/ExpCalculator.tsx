@@ -39,12 +39,31 @@ const ExpCalculator = () => {
   const [currentExp, setCurrentExp] = useState<number>(() => calculateExp(parseInt(cookieManager.getCookie('currentRank')) || 1500));
   const [targetRank, setTargetRank] = useState<number>(() => parseInt(cookieManager.getCookie('targetRank')) || 2000);
   const [targetExp, setTargetExp] = useState<number>(() => calculateExp(parseInt(cookieManager.getCookie('targetRank')) || 2000));
-  const [targetYear, setTargetYear] = useState<number>(() => parseInt(cookieManager.getCookie('targetYear')) || new Date().getFullYear());
-  const [targetMonth, setTargetMonth] = useState<number>(() => parseInt(cookieManager.getCookie('targetMonth')) || new Date().getMonth() + 1);
-  const [targetDay, setTargetDay] = useState<number>(() => parseInt(cookieManager.getCookie('targetDay')) || new Date().getDate() + 1);
+
+  // Date related states with past date check
+  const getDefaultTargetDate = (): { year: number; month: number; day: number } => {
+    const today = new Date();
+    let year = parseInt(cookieManager.getCookie('targetYear')) || today.getFullYear();
+    let month = parseInt(cookieManager.getCookie('targetMonth')) || today.getMonth() + 1;
+    let day = parseInt(cookieManager.getCookie('targetDay')) || today.getDate();
+
+    const targetDate = new Date(year, month - 1, day);
+    if (targetDate < today) {
+      year = today.getFullYear();
+      month = today.getMonth() + 1;
+      day = today.getDate() + 1;
+    }
+    return { year, month, day };
+  };
+
+  const defaultTargetDate = getDefaultTargetDate();
+  const [targetYear, setTargetYear] = useState<number>(defaultTargetDate.year);
+  const [targetMonth, setTargetMonth] = useState<number>(defaultTargetDate.month);
+  const [targetDay, setTargetDay] = useState<number>(defaultTargetDate.day);
+
   const [learningLevel, setLearningLevel] = useState<string>(() => cookieManager.getCookie('learningLevel') || '1.65');
   const [lapExp, setLapExp] = useState<number>(() => parseInt(cookieManager.getCookie('lapExp')) || 20000);
-  const [lapsPerHour, setLapsPerHour] = useState<number>(() => parseInt(cookieManager.getCookie('lapsPerHour')) || 60);
+  const [lapsPerHour, setLapsPerHour] = useState<number>(() => parseInt(cookieManager.getCookie('lapsPerHour')) || lapExp);
   const [expMultiplier, setExpMultiplier] = useState<string>(() => cookieManager.getCookie('expMultiplier') || '3');
   const [learningPower, setLearningPower] = useState<string>(() => cookieManager.getCookie('learningPower') || '1.75');
   const [monpassMultiplier, setMonpassMultiplier] = useState<string>(() => cookieManager.getCookie('monpassMultiplier') || '1.0');
@@ -223,8 +242,7 @@ const ExpCalculator = () => {
     const tweetText = encodeURIComponent(`
 #STRIKERBASE
 ランク ${currentRank} からランク ${targetRank} に上げるための必要な経験値は ${requiredExp.toLocaleString()} です！
-1周あたりの経験値は ${result.expPerLap.toLocaleString()}
-1日あたりの周回数は ${result.lapsPerDay.toLocaleString()} 周で、1日あたりの周回時間は ${result.hoursPerDay} 時間です！
+1日あたりに必要な周回数は ${result.lapsPerDay.toLocaleString()} 周で、1日あたりの周回時間は ${result.hoursPerDay} 時間です！
 詳しくは ${window.location.href} でチェック！
 `);
 
@@ -557,6 +575,22 @@ const ExpCalculator = () => {
                     <Text fontSize="xl" fontWeight="bold" color="yellow.600">1周あたりの経験値</Text>
                   </HStack>
                   <Text fontSize="2xl" fontWeight="bold" color="yellow.700">{result.expPerLap.toLocaleString()}</Text>
+                </GridItem>
+              </Box>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+                shadow="md"
+                bg="white"
+              >
+                <GridItem>
+                  <HStack>
+                    <Icon as={FiZap} color="orange.500" boxSize={6} />
+                    <Text fontSize="xl" fontWeight="bold" color="orange.600">1時間あたりの経験値</Text>
+                  </HStack>
+                  <Text fontSize="2xl" fontWeight="bold" color="orange.700">{Number(result.expPerHour).toLocaleString()}</Text>
                 </GridItem>
               </Box>
               <Box

@@ -70,7 +70,7 @@ export default function Navbar() {
 
 const DesktopNav = () => {
   const linkColor = 'gray.900'
-  const linkHoverColor = 'gray.900'
+  const linkHoverColor = 'blue.400'
   const popoverContentBgColor = 'white'
 
   return (
@@ -86,10 +86,14 @@ const DesktopNav = () => {
                 fontSize={'md'}
                 fontWeight={700}
                 color={linkColor}
+                borderRadius={'md'}
                 _hover={{
                   textDecoration: 'none',
                   color: linkHoverColor,
-                }}>
+                  bg: 'gray.100',
+                  boxShadow: 'md',
+                }}
+                transition={'all 0.3s ease'}>
                 {navItem.label}
               </Box>
             </PopoverTrigger>
@@ -123,9 +127,10 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
       href={href}
       role={'group'}
       display={'block'}
-      p={2}
+      p={3}
       rounded={'md'}
-      _hover={{ bg: 'blue.50' }}>
+      _hover={{ bg: 'blue.50' }}
+      transition={'background 0.3s ease'}>
       <Stack direction={'row'} align={'center'}>
         <Box>
           <Text
@@ -136,7 +141,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
           >
             {label}
           </Text>
-          <Text fontSize={'sm'} color={'gray.700'}>{subLabel}</Text>
+          <Text fontSize={'sm'} color={'gray.600'}>{subLabel}</Text>
         </Box>
         <Flex
           transition={'all .3s ease'}
@@ -169,14 +174,20 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
   return (
     <Stack spacing={1} onClick={children && onToggle}>
       <Box
-        py={2}
+        py={3}
+        px={4}
         as="a"
         href={href ?? '#'}
         justifyContent="space-between"
         alignItems="center"
         _hover={{
           textDecoration: 'none',
-        }}>
+          bg: 'gray.200',
+          borderRadius: 'md',
+        }}
+        borderRadius={'md'}
+        transition={'background 0.3s ease'}
+      >
         <Text fontWeight={600} color={'gray.800'}>
           {label}
         </Text>
@@ -201,7 +212,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           align={'start'}>
           {children &&
             children.map((child) => (
-              <Box fontWeight={600} as="a" key={child.label} py={1} href={child.href}>
+              <Box fontWeight={600} as="a" key={child.label} py={2} px={4} href={child.href} _hover={{ bg: 'gray.200', borderRadius: 'md' }}>
                 {child.label}
               </Box>
             ))}

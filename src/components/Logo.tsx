@@ -6,7 +6,7 @@ export const Logo = (props: any) => {
             <img
                 src="/striker-base-icon.png"
                 alt="Logo"
-                width="60px"
+                width="70px"
             />
         </Link>
     );
