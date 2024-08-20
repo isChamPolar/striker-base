@@ -41,4 +41,4 @@ class CookieManager {
   }
   
   export const cookieManager = new CookieManager();
-  
+// Path: src/lib/cookieManager.ts
