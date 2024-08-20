@@ -1,7 +1,7 @@
 import { Box, Heading, Stack, Text, Avatar, Flex, VStack, Link } from '@chakra-ui/react';
 import { XTwitterButton, YouTubeButton } from '../components/SocialButton';
 import React from 'react';
-import { releaseNotes } from '../constants/releaseNotes';
+import { getReleaseNotes } from '../constants/releaseNotes';
 
 const HomePage = () => {
   return (
@@ -70,10 +70,10 @@ const HomePage = () => {
           textAlign={'center'}
           py={6}
         >
-          <Text fontSize={{ base: 'lg', md: '2xl' }} textAlign={'center'} maxW={'3xl'} lineHeight={{ base: '170%', md: '160%' }}>
-            このサイトは、人気ゲームアプリ「モンスターストライク」を愛する全てのストライカーのために
+          <Text fontSize={{ base: 'lg', md: '2xl' }} textAlign={'center'} maxW={'4xl'} lineHeight={{ base: '170%', md: '160%' }}>
+            STRIKER BASEは、人気ゲームアプリ「モンスターストライク」を愛する全てのストライカーのために
             <br />
-            便利なツールや攻略情報を提供するサイトです。
+            便利なツールや攻略情報を提供いたします。
             <br />
             「こういったツールが欲しかった」
             「こんな情報が知りたかった」
@@ -102,7 +102,7 @@ const HomePage = () => {
             リリースノート
           </Heading>
           <VStack align={'start'} spacing={4} w={'full'}>
-            {releaseNotes.slice(0, 3).map((note, index) => (
+            {getReleaseNotes().slice(0, 3).map((note, index) => (
               <Box
                 key={index}
                 p={4}
