@@ -35,7 +35,7 @@ const HomePage = () => {
           bg={'white'}
         >
           <Avatar
-            src={'../public/owner-icon.png'}
+            src={'/owner-icon.png'}
             mb={4}
             w={24}
             h={24}
