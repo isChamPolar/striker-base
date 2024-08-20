@@ -29,7 +29,7 @@ jobs:
 
     - name: Create 404.html file
       run: |
-        echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=/" /></head><body><script>const pathname = window.location.pathname; const search = window.location.search; const hash = window.location.hash; window.location.href = "/#"+pathname+search+hash;</script></body></html>' > ./dist/404.html
+        echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=/index.html" /></head><body><script>window.location.href="/index.html?path=" + encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);</script></body></html>' > ./dist/404.html
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
