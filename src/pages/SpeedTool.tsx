@@ -124,6 +124,7 @@ const SpeedTool = () => {
             wakuwakuList: patternString,
             totalValue: Math.round(addSpeed * 100) / 100,
             totalSpeed: Math.round(addedSpeed * 100) / 100,
+            currentSpeed: Math.round(inputSpeed * 100) / 100,  // 現在のスピードを追加
           });
           patternCount++;
           if (patternCount >= maxPatterns) return patterns;
@@ -243,7 +244,7 @@ const SpeedTool = () => {
 
       <Flex mt={4}>
         <FormControl isRequired mr={2}>
-          <FormLabel fontWeight={600} htmlFor="lowerLimit">調整したいスピード(下限)</FormLabel>
+          <FormLabel fontWeight={600} htmlFor="lowerLimit">スピード(下限)</FormLabel>
           <Input 
             id="lowerLimit" 
             name="lowerLimit" 
@@ -257,7 +258,7 @@ const SpeedTool = () => {
         </FormControl>
 
         <FormControl isRequired>
-          <FormLabel fontWeight={600} htmlFor="upperLimit">調整したいスピード(上限)</FormLabel>
+          <FormLabel fontWeight={600} htmlFor="upperLimit">スピード(上限)</FormLabel>
           <Input 
             id="upperLimit" 
             name="upperLimit" 
@@ -365,12 +366,16 @@ const SpeedTool = () => {
                       </HStack>
                       <Text mt={2} fontSize="md" fontWeight="bold" whiteSpace="pre-line">{pattern.wakuwakuList}</Text>
                       <HStack mt={4}>
-                        <Icon as={FiRepeat} color="blue.500" boxSize={6} />
-                        <Text fontSize="xl" fontWeight="bold" color="blue.700">合計: {pattern.totalValue} 増加</Text>
+                        <Icon as={FiTrendingUp} color="orange.500" boxSize={6} />
+                        <Text fontSize="xl" fontWeight="bold" color="orange.700">調整前: {pattern.currentSpeed} km/h</Text>
                       </HStack>
-                      <HStack mt={2}>
+                      <HStack mt={4}>
+                        <Icon as={FiRepeat} color="blue.500" boxSize={6} />
+                        <Text fontSize="xl" fontWeight="bold" color="blue.700">効果量: {pattern.totalValue} 増加</Text>
+                      </HStack>
+                      <HStack mt={4}>
                         <Icon as={FiTrendingUp} color="red.500" boxSize={6} />
-                        <Text fontSize="xl" fontWeight="bold" color="red.700">スピード: {pattern.totalSpeed} km/h</Text>
+                        <Text fontSize="xl" fontWeight="bold" color="red.700">調整後: {pattern.totalSpeed} km/h</Text>
                       </HStack>
                     </GridItem>
                   </Box>

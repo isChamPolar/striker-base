@@ -201,7 +201,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           align={'start'}>
           {children &&
             children.map((child) => (
-              <Box as="a" key={child.label} py={1} href={child.href}>
+              <Box fontWeight={600} as="a" key={child.label} py={1} href={child.href}>
                 {child.label}
               </Box>
             ))}
