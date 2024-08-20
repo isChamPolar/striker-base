@@ -27,13 +27,13 @@ export default function SmallCentered() {
         justify={'center'}
         align={'center'}>
         <Stack direction={'row'} spacing={5}>
-          <Box as="a" href={'/'}>
+          <Box as="a" href={'/'} fontSize={12}>
             トップ
           </Box>
-          <Box as="a" href={'/about'}>
+          <Box as="a" href={'/about'} fontSize={12}>
             ご利用について
           </Box>
-          <Box as="a" href={'/privacy-policy'}>
+          <Box as="a" href={'/privacy-policy'} fontSize={12}>
             プライバシーポリシー
           </Box>
         </Stack>

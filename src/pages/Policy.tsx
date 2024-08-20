@@ -56,7 +56,7 @@ export const Policy = () => {
         mt={{ base: 6, sm: 8, md: 10 }} // 上部に余白を追加
       >
         <Text as={'span'} color={'black.400'}>
-        Cookieの使用について
+        CookieおよびlocalStorageの使用について
         </Text>
       </Heading>
       <Stack
@@ -68,8 +68,8 @@ export const Policy = () => {
           py={6}
         >
           <Text fontSize={{ base: 'lg', md: '2xl' }} maxW={'3xl'} lineHeight={{ base: '170%', md: '160%' }}>
-          当サイト「STRIKER BASE」では、訪問者様によりよいサイト体験を提供するために、Cookieを使用しています。Cookieの使用については、訪問者様がブラウザの設定でCookieを無効化することができます。
-          無効化することで、一部の機能が制限される場合がありますので、予めご了承ください。
+          当サイト「STRIKER BASE」では、訪問者様によりよいサイト体験を提供するために、CookieおよびlocalStorageを使用しています。これらの技術により、サイトの利用状況を分析し、訪問者様にカスタマイズされたコンテンツを提供することができます。
+          CookieおよびlocalStorageの使用については、訪問者様がブラウザの設定でこれらを無効化することができます。無効化することで、一部の機能が制限される場合がありますので、予めご了承ください。
           </Text>
         </Box>
       </Stack>
