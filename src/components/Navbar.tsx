@@ -1,5 +1,3 @@
-'use client'
-
 import {
   Box,
   Flex,
@@ -56,7 +54,7 @@ export default function Navbar() {
         >
           <Logo />
         </Box>
-        <Box display={{ base: 'none', md: 'block' }} ml={10}>
+        <Box display={{ base: 'none', md: 'block' }} ml="auto">
           <DesktopNav />
         </Box>
       </Flex>
