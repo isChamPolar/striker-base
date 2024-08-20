@@ -1,14 +1,16 @@
-import { Box, Heading, Stack, Text, Avatar, Flex } from '@chakra-ui/react';
+import { Box, Heading, Stack, Text, Avatar, Flex, VStack, Link } from '@chakra-ui/react';
 import { XTwitterButton, YouTubeButton } from '../components/SocialButton';
+import React from 'react';
+import { releaseNotes } from '../constants/releaseNotes';
 
 const HomePage = () => {
   return (
     <Box p={4}>
       <Heading
         fontWeight={600}
-        fontSize={{ base: '3xl', sm: '3xl', md: '4xl' }} // モバイル時に少し大きく
-        lineHeight={{ base: '160%', sm: '150%' }} // モバイル時に行間を少し広く
-        mt={{ base: 6, sm: 8, md: 10 }} // 上部に余白を追加
+        fontSize={{ base: '3xl', sm: '3xl', md: '4xl' }}
+        lineHeight={{ base: '160%', sm: '150%' }}
+        mt={{ base: 6, sm: 8, md: 10 }}
       >
         <Text as={'span'} color={'black.400'}>
           ようこそ <br />
@@ -22,7 +24,8 @@ const HomePage = () => {
         px={5}
         spacing={{ base: 4, md: 5 }}
         align={'center'}
-        direction={'column'}>
+        direction={'column'}
+      >
         <Box
           textAlign={'center'}
           px={6}
@@ -79,6 +82,47 @@ const HomePage = () => {
             <br />
             誠心誠意、全力でサポートします。
           </Text>
+        </Box>
+        <Box
+          mt={8}
+          p={6}
+          maxW={'3xl'}
+          borderWidth={'1px'}
+          borderRadius={'lg'}
+          boxShadow={'xl'}
+          bg={'gray.50'} // 背景色を変更
+          w={'full'} // 親要素いっぱいに広げる
+        >
+          <Heading
+            fontSize={'xl'}
+            fontWeight={600}
+            color={'black.400'}
+            mb={4}
+          >
+            リリースノート
+          </Heading>
+          <VStack align={'start'} spacing={4} w={'full'}>
+            {releaseNotes.slice(0, 3).map((note, index) => (
+              <Box
+                key={index}
+                p={4}
+                bg={'white'}
+                borderRadius={'md'}
+                boxShadow={'md'} // カードの影を追加
+                w={'full'} // 親要素いっぱいに広げる
+              >
+                <Text fontSize={'md'} fontWeight={600} color={'gray.400'}>
+                  {note.date}
+                </Text>
+                <Text fontSize={'lg'} fontWeight={700} color={'black.400'} mt={2}>
+                  {note.title}
+                </Text>
+              </Box>
+            ))}
+          </VStack>
+          <Link href="/release-notes" color={'blue.500'} fontWeight={600} mt={4} display={'block'}>
+            リリースノート一覧を見る
+          </Link>
         </Box>
       </Stack>
     </Box>
