@@ -27,6 +27,10 @@ jobs:
     - name: Add CNAME file
       run: echo 'striker-base.com' > ./dist/CNAME
 
+    - name: Create 404.html file
+      run: |
+        echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=/" /></head><body><script>const pathname = window.location.pathname; const search = window.location.search; const hash = window.location.hash; window.location.href = "/#"+pathname+search+hash;</script></body></html>' > ./dist/404.html
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:

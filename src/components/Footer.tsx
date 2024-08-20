@@ -17,7 +17,7 @@ export default function SmallCentered() {
       borderTopWidth={1}
       borderStyle={'solid'}
       borderColor={'gray.200'}
-      pb={{ base: 'env(safe-area-inset-bottom)', md: 0 }} // PWA時に余白を追加
+      pb={20}
     >
       <Container
         as={Stack}
