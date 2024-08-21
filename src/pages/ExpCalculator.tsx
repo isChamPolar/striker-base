@@ -278,11 +278,11 @@ const ExpCalculator = () => {
         <Icon as={FiBarChart2} boxSize={8} color="blue.400" />
         <Heading
           fontWeight={600}
-          fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
+          fontSize={{ base: '1xl', sm: '2xl', md: '2xl' }}
           lineHeight={{ base: '160%', sm: '150%' }}
           ml={2}
         >
-          ランク計算ツール
+          ランク&経験値計算ツール
         </Heading>
       </HStack>
 
