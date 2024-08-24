@@ -1,4 +1,4 @@
-const fs = require('fs');
+import { writeFileSync } from 'fs';
 
 const paths = [
   '/',
@@ -21,5 +21,5 @@ const sitemapContent = `
 </urlset>
 `;
 
-fs.writeFileSync('./dist/sitemap.xml', sitemapContent.trim());
+writeFileSync('./dist/sitemap.xml', sitemapContent.trim());
 console.log('✅ Sitemap has been generated!');
