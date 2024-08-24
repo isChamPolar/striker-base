@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-sitemap": "npx sitemap-generator-cli https://striker-base.com --output ./dist/sitemap.xml"
+    "generate-sitemap": "node generate-sitemap.js"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
