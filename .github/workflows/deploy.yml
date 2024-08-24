@@ -24,9 +24,8 @@ jobs:
     - name: Build the project
       run: npm run build
 
-    - name: Generate sitemap dynamically
-      run: |
-        npx sitemap-generator-cli https://striker-base.com -o ./dist/sitemap.xml
+    - name: Generate sitemap
+      run: npm run generate-sitemap
 
     - name: Create robots.txt file
       run: |
