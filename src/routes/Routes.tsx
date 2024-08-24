@@ -17,10 +17,13 @@ const AppRoutes = () => {
 
   useEffect(() => {
     const path = new URLSearchParams(location.search).get('path');
-    if (path) {
+    
+    const nonRedirectPaths = ['/sitemap.xml', '/robots.txt'];
+
+    if (path && !nonRedirectPaths.some(nonRedirectPath => location.pathname.includes(nonRedirectPath))) {
       navigate(path, { replace: true });
     }
-  }, [location.search, navigate]);
+  }, [location.search, location.pathname, navigate]);
 
   return (
     <Routes>
