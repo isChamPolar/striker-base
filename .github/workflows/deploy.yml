@@ -24,17 +24,9 @@ jobs:
     - name: Build the project
       run: npm run build
 
-    - name: Generate sitemap
+    - name: Generate sitemap dynamically
       run: |
-        echo '<?xml version="1.0" encoding="UTF-8"?>' > ./dist/sitemap.xml
-        echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' >> ./dist/sitemap.xml
-        echo '  <url><loc>https://striker-base.com/</loc><lastmod>2024-08-21</lastmod><priority>1.00</priority></url>' >> ./dist/sitemap.xml
-        echo '  <url><loc>https://striker-base.com/about</loc><lastmod>2024-08-21</lastmod><priority>0.80</priority></url>' >> ./dist/sitemap.xml
-        echo '  <url><loc>https://striker-base.com/privacy-policy</loc><lastmod>2024-08-21</lastmod><priority>0.80</priority></url>' >> ./dist/sitemap.xml
-        echo '  <url><loc>https://striker-base.com/release-notes</loc><lastmod>2024-08-21</lastmod><priority>0.80</priority></url>' >> ./dist/sitemap.xml
-        echo '  <url><loc>https://striker-base.com/speed-tool</loc><lastmod>2024-08-21</lastmod><priority>0.80</priority></url>' >> ./dist/sitemap.xml
-        echo '  <url><loc>https://striker-base.com/exp-calculator</loc><lastmod>2024-08-21</lastmod><priority>0.80</priority></url>' >> ./dist/sitemap.xml
-        echo '</urlset>' >> ./dist/sitemap.xml
+        npx sitemap-generator-cli https://striker-base.com -o ./dist/sitemap.xml
 
     - name: Create robots.txt file
       run: |
