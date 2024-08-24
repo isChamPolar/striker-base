@@ -33,6 +33,10 @@ jobs:
         echo 'Disallow:' >> ./dist/robots.txt
         echo 'Sitemap: https://striker-base.com/sitemap.xml' >> ./dist/robots.txt
 
+    - name: Add ads.txt file
+      run: |
+        echo 'google.com, pub-1930471475519673, DIRECT, f08c47fec0942fa0' > ./dist/ads.txt
+
     - name: Add CNAME file
       run: echo 'striker-base.com' > ./dist/CNAME
 
