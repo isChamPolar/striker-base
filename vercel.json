@@ -1,0 +1,10 @@
+{
+    "trailingSlash": false,
+    "rewrites": [
+        { "source": "/about", "destination": "/index.html" },
+        { "source": "/privacy-policy", "destination": "/index.html" },
+        { "source": "/release-notes", "destination": "/index.html" },
+        { "source": "/speed-tool", "destination": "/index.html" },
+        { "source": "/exp-calculator", "destination": "/index.html" }
+    ]
+}

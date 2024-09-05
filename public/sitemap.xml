@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://striker-base.com</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://striker-base.com/about</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://striker-base.com/privacy-policy</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://striker-base.com/release-notes</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://striker-base.com/speed-tool</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://striker-base.com/exp-calculator</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>
