@@ -207,7 +207,7 @@ const SpeedTool = () => {
       onSubmit={handleSubmit}
     >
       <Helmet>
-        <title>スピード調整ツール | STRIKER BASE - モンスト便利ツール</title>
+        <title>モンスト スピード調整ツール | STRIKER BASE - モンスト便利ツール</title>
         <meta name="description" content="周回の効率アップ！どのわくわくの実をどれだけ付ければOKかすぐわかる！" />
         <meta property="og:title" content="スピード調整ツール | STRIKER BASE - モンスト便利ツール" />
         <meta property="og:description" content="今のスピードを入力して、どのわくわくの実をどれだけ付ければOKかすぐわかる！" />

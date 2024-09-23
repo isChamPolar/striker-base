@@ -265,7 +265,7 @@ const ExpCalculator = () => {
       onSubmit={handleSubmit}
     >
       <Helmet>
-        <title>ランク計算ツール | STRIKER BASE - モンスト便利ツール</title>
+        <title>モンスト ランク計算ツール | STRIKER BASE - モンスト便利ツール</title>
         <meta name="description" content="ランク上げに必須！目標までの道のりをチェック！" />
         <meta property="og:title" content="ランク計算ツール | STRIKER BASE - モンスト便利ツール" />
         <meta property="og:description" content="目標ランクを入力！必要な経験値を計算できる便利ツール！" />
