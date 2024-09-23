@@ -63,7 +63,7 @@ const ExpCalculator = () => {
 
   const [learningLevel, setLearningLevel] = useState<string>(() => cookieManager.getCookie('learningLevel') || '1.65');
   const [lapExp, setLapExp] = useState<number>(() => parseInt(cookieManager.getCookie('lapExp')) || 20000);
-  const [lapsPerHour, setLapsPerHour] = useState<number>(() => parseInt(cookieManager.getCookie('lapsPerHour')) || lapExp);
+  const [lapsPerHour, setLapsPerHour] = useState<number>(() => parseInt(cookieManager.getCookie('lapsPerHour')) || 60);
   const [expMultiplier, setExpMultiplier] = useState<string>(() => cookieManager.getCookie('expMultiplier') || '3');
   const [learningPower, setLearningPower] = useState<string>(() => cookieManager.getCookie('learningPower') || '1.75');
   const [monpassMultiplier, setMonpassMultiplier] = useState<string>(() => cookieManager.getCookie('monpassMultiplier') || '1.0');
