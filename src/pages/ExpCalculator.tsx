@@ -23,8 +23,8 @@ import { Helmet } from 'react-helmet-async';
 import { cookieManager } from '../lib/cookieManager';
 
 const calculateExp = (rank: number): number => {
-  const maxRankInTable = 2000;
-  const additionalExpPerRank = 4330881;
+  const maxRankInTable = 2500;
+  const additionalExpPerRank = 12992643;
 
   if (rank <= maxRankInTable) {
     return rankTable[rank] ?? 0;
@@ -35,10 +35,10 @@ const calculateExp = (rank: number): number => {
 };
 
 const ExpCalculator = () => {
-  const [currentRank, setCurrentRank] = useState<number>(() => parseInt(cookieManager.getCookie('currentRank')) || 1500);
-  const [currentExp, setCurrentExp] = useState<number>(() => calculateExp(parseInt(cookieManager.getCookie('currentRank')) || 1500));
-  const [targetRank, setTargetRank] = useState<number>(() => parseInt(cookieManager.getCookie('targetRank')) || 2000);
-  const [targetExp, setTargetExp] = useState<number>(() => calculateExp(parseInt(cookieManager.getCookie('targetRank')) || 2000));
+  const [currentRank, setCurrentRank] = useState<number>(() => parseInt(cookieManager.getCookie('currentRank')) || 2000);
+  const [currentExp, setCurrentExp] = useState<number>(() => calculateExp(parseInt(cookieManager.getCookie('currentRank')) || 2000));
+  const [targetRank, setTargetRank] = useState<number>(() => parseInt(cookieManager.getCookie('targetRank')) || 2500);
+  const [targetExp, setTargetExp] = useState<number>(() => calculateExp(parseInt(cookieManager.getCookie('targetRank')) || 2500));
 
   // Date related states with past date check
   const getDefaultTargetDate = (): { year: number; month: number; day: number } => {
@@ -62,10 +62,11 @@ const ExpCalculator = () => {
   const [targetDay, setTargetDay] = useState<number>(defaultTargetDate.day);
 
   const [learningLevel, setLearningLevel] = useState<string>(() => cookieManager.getCookie('learningLevel') || '1.65');
-  const [lapExp, setLapExp] = useState<number>(() => parseInt(cookieManager.getCookie('lapExp')) || 20000);
+  const [lapExp, setLapExp] = useState<number>(() => parseInt(cookieManager.getCookie('lapExp')) || 40000);
   const [lapsPerHour, setLapsPerHour] = useState<number>(() => parseInt(cookieManager.getCookie('lapsPerHour')) || 60);
   const [expMultiplier, setExpMultiplier] = useState<string>(() => cookieManager.getCookie('expMultiplier') || '3');
   const [learningPower, setLearningPower] = useState<string>(() => cookieManager.getCookie('learningPower') || '1.75');
+  const [luckBonus, setLuckBonus] = useState<string>(() => cookieManager.getCookie('luckBonus') || '1.05');
   const [monpassMultiplier, setMonpassMultiplier] = useState<string>(() => cookieManager.getCookie('monpassMultiplier') || '1.0');
   const [remainingDays, setRemainingDays] = useState<number>(0);
   const [requiredExp, setRequiredExp] = useState<number>(0);
@@ -96,11 +97,12 @@ const ExpCalculator = () => {
     cookieManager.setCookie('expMultiplier', expMultiplier, 14);
     cookieManager.setCookie('learningPower', learningPower, 14);
     cookieManager.setCookie('monpassMultiplier', monpassMultiplier, 14);
-  }, [currentRank, targetRank, targetYear, targetMonth, targetDay, learningLevel, lapExp, lapsPerHour, expMultiplier, learningPower, monpassMultiplier]);
+    cookieManager.setCookie('luckBonus', luckBonus, 14);
+  }, [currentRank, targetRank, targetYear, targetMonth, targetDay, learningLevel, lapExp, lapsPerHour, expMultiplier, learningPower, monpassMultiplier, luckBonus]);
 
   const findRankByExp = (exp: number): number | null => {
-    const maxRankInTable = 2000;
-    const additionalExpPerRank = 4330881;
+    const maxRankInTable = 2500;
+    const additionalExpPerRank = 12992643;
 
     const rank = Object.keys(rankTable).find(
       (key) => rankTable[parseInt(key)] > exp
@@ -194,6 +196,7 @@ const ExpCalculator = () => {
     const finalExpMultiplier =
       parseFloat(expMultiplier) *
       parseFloat(learningPower) *
+      parseFloat(luckBonus) * 
       parseFloat(learningLevel) * 
       parseFloat(monpassMultiplier);
     const expPerLap = lapExp * finalExpMultiplier;
@@ -353,7 +356,7 @@ const ExpCalculator = () => {
       </Flex>
 
       <Text as="span" color="red.500" fontSize="xs">
-        ※2000以降のランクでは1ランクあたりに必要な経験値を4330881として計算します。
+        ※2500以降のランクでは1ランクあたりに必要な経験値を12992643として計算します。
       </Text>
 
       <FormControl isRequired mt={4}>
@@ -434,6 +437,7 @@ const ExpCalculator = () => {
           borderColor="gray.400"
           focusBorderColor="blue.400"
         >
+          <option value={40000}>危地シリーズ (40,000)</option>
           <option value={20000}>魔境シリーズ (20,000)</option>
           <option value={15000}>険所シリーズ (15,000)</option>
         </Select>
@@ -498,6 +502,25 @@ const ExpCalculator = () => {
           <option value="1.55">特級M (1.55)</option>
           <option value="1.5">特級 (1.50)</option>
           <option value="1.0">なし</option>
+        </Select>
+      </FormControl>
+
+      <FormControl isRequired mt={4}>
+        <FormLabel fontWeight={600} htmlFor="luckBonus">運極ボーナス</FormLabel>
+        <Select
+          id="luckBonus"
+          name="luckBonus"
+          value={luckBonus}
+          onChange={(e) => setLuckBonus(e.target.value)}
+          borderColor="gray.400"
+          focusBorderColor="blue.400"
+        >
+          <option value="1.05">Lv. 5 (5% UP)</option>
+          <option value="1.04">Lv. 4 (4% UP)</option>
+          <option value="1.03">Lv. 3 (3% UP)</option>
+          <option value="1.02">Lv. 2 (2% UP)</option>
+          <option value="1.01">Lv. 1 (1% UP)</option>
+          <option value="1.00">なし</option>
         </Select>
       </FormControl>
 
