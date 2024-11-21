@@ -68,6 +68,7 @@ const ExpCalculator = () => {
   const [learningPower, setLearningPower] = useState<string>(() => cookieManager.getCookie('learningPower') || '1.75');
   const [luckBonus, setLuckBonus] = useState<string>(() => cookieManager.getCookie('luckBonus') || '1.05');
   const [monpassMultiplier, setMonpassMultiplier] = useState<string>(() => cookieManager.getCookie('monpassMultiplier') || '1.0');
+  const [abilityExpUp, setAbilityExpUp] = useState<string>(() => cookieManager.getCookie('abilityExpUp') || '1.0');
   const [remainingDays, setRemainingDays] = useState<number>(0);
   const [requiredExp, setRequiredExp] = useState<number>(0);
   const [result, setResult] = useState<{
@@ -98,7 +99,8 @@ const ExpCalculator = () => {
     cookieManager.setCookie('learningPower', learningPower, 14);
     cookieManager.setCookie('monpassMultiplier', monpassMultiplier, 14);
     cookieManager.setCookie('luckBonus', luckBonus, 14);
-  }, [currentRank, targetRank, targetYear, targetMonth, targetDay, learningLevel, lapExp, lapsPerHour, expMultiplier, learningPower, monpassMultiplier, luckBonus]);
+    cookieManager.setCookie('abilityExpUp', abilityExpUp, 14);
+  }, [currentRank, targetRank, targetYear, targetMonth, targetDay, learningLevel, lapExp, lapsPerHour, expMultiplier, learningPower, monpassMultiplier, luckBonus, abilityExpUp]);
 
   const findRankByExp = (exp: number): number | null => {
     const maxRankInTable = 2500;
@@ -198,7 +200,8 @@ const ExpCalculator = () => {
       parseFloat(learningPower) *
       parseFloat(luckBonus) * 
       parseFloat(learningLevel) * 
-      parseFloat(monpassMultiplier);
+      parseFloat(monpassMultiplier) *
+      parseFloat(abilityExpUp);
     const expPerLap = lapExp * finalExpMultiplier;
     const totalLaps = requiredExp / expPerLap;
     const lapsPerDay = totalLaps / remainingDays;
@@ -521,6 +524,21 @@ const ExpCalculator = () => {
           <option value="1.02">Lv. 2 (2% UP)</option>
           <option value="1.01">Lv. 1 (1% UP)</option>
           <option value="1.00">なし</option>
+        </Select>
+      </FormControl>
+
+      <FormControl isRequired mt={4}>
+        <FormLabel fontWeight={600} htmlFor="abilityExpUp">アビリティ【経験値アップ】</FormLabel>
+        <Select
+          id="abilityExpUp"
+          name="abilityExpUp"
+          value={abilityExpUp}
+          onChange={(e) => setAbilityExpUp(e.target.value)}
+          borderColor="gray.400"
+          focusBorderColor="blue.400"
+        >
+          <option value="1.0">なし</option>
+          <option value="1.5">経験値アップ(50% UP)</option>
         </Select>
       </FormControl>
 
